@@ -150,7 +150,7 @@ OV原生`max_input_tokens`是估计截头，不是精确分段。配置将其提
 
 同一专用bridge，只有LLM管理/OAuth loopback1455与OV loopback1933发布到宿主；Embedding/engine不公开端口。普通harness通过MCP/user key访问OV，不拿Root或Gateway admin key。
 
-部署包与源码分离：三份运行配置加说明、镜像清单与校验值；四镜像由 Actions 测试、构建并发布到 GHCR，部署模板按 digest 固定引用，无源码 mount/build 依赖。引擎从固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 编译并使用 Debian bookworm Mesa 包，不依赖旧本地 native image/runtime；旧性能记录不作为新镜像验收。使用Docker named volumes保存模型、OAuth和OV状态，镜像预设目录属主/权限，不要求填写宿主UID。引擎入口以HTTPS下载固定模型并校验size/SHA后原子发布；已有模型每次核验，失败不覆盖旧文件。OV入口内置派生镜像，等待adapter ready后exec官方入口。
+部署包与源码分离：三份运行配置加说明、镜像清单与校验值；四镜像由 Actions 测试、构建并发布到 GHCR，部署模板按 digest 固定引用，无源码 mount/build 依赖。引擎从固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 编译并使用 Debian trixie Mesa 包，不依赖旧本地 native image/runtime；旧性能记录不作为新镜像验收。使用Docker named volumes保存模型、OAuth和OV状态，镜像预设目录属主/权限，不要求填写宿主UID。引擎入口以HTTPS下载固定模型并校验size/SHA后原子发布；已有模型每次核验，失败不覆盖旧文件。OV入口内置派生镜像，等待adapter ready后exec官方入口。
 
 .env只配置一个256bit随机主密钥（64hex字符）。Node/Python/入口按HMAC-SHA256(master原样UTF8, `agent-memory-stack/v1/<role>`)派生六角色key，输出64hex；roles为llm-data、llm-admin、embedding-data、embedding-admin、embedding-engine、openviking-root。主密钥大小写不归一化、不hex解码。无master时应用保留显式key/file开发兼容，混用明确报错。修改.env后compose up -d重建受影响容器。
 

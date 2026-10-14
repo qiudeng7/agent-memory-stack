@@ -39,7 +39,7 @@ AMS_MASTER_KEY=0000000000000000000000000000000000000000000000000000000000000000 
 AMS_MASTER_KEY=0000000000000000000000000000000000000000000000000000000000000000 EMBEDDING_GPU_LAYERS=0 RENDER_DEVICE=/dev/null docker compose --env-file .env.example config --quiet
 ```
 
-引擎在 Docker 构建中编译固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14`，使用 Debian bookworm Mesa 包；不依赖本机 native image 或 runtime 目录。构建需要访问上游源码及软件包源。旧 RX570/native 引擎性能不能作为这份 Mesa 镜像的 GPU、性能或完整链路验收。
+引擎在 Docker 构建中编译固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14`，使用 Debian trixie Mesa 包；不依赖本机 native image 或 runtime 目录。构建需要访问上游源码及软件包源。旧 RX570/native 引擎性能不能作为这份 Mesa 镜像的 GPU、性能或完整链路验收。
 
 正式镜像由 Actions 测试、构建和推送，再按四个镜像 digest 生成部署包，见[发布流程](<docs/deployment.md#维护者发布流程>)。必要时，维护者下载同一次运行的四个 `image-*` artifacts，保留各自目录，再执行：
 

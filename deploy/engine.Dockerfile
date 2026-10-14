@@ -1,5 +1,5 @@
 # Build the fixed upstream revision in CI; no local native image or runtime tree.
-ARG PYTHON_IMAGE=python:3.11-slim-bookworm@sha256:a36c24f9cbdf4fd0f52d67f0823eeac19c2028c637cecc392d97f980d4fec56b
+ARG PYTHON_IMAGE=python:3.11-slim-trixie@sha256:e88e9763f943ec1834f992a4b51e0f24500486803e8bc534e5767af9ea65f6ce
 FROM ${PYTHON_IMAGE} AS build
 RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates cmake ninja-build g++ libvulkan-dev glslc spirv-headers libssl-dev
 ARG LLAMA_REVISION=d81235049384534c167caea52b85a694f6103d14
@@ -21,7 +21,8 @@ COPY --from=build /src/LICENSE /opt/metadata/llama-LICENSE
 COPY deploy/engine-entrypoint.py /stack/engine-entrypoint.py
 RUN cp /lib64/ld-linux-x86-64.so.2 /opt/runtime/ld-linux-x86-64.so.2 \
     && ln -s libggml-cpu.so /opt/runtime/libggml-cpu-haswell.so \
+    && cp /usr/share/vulkan/icd.d/radeon_icd*.json /opt/runtime/radeon_icd.json \
     && mkdir -p /models && chmod 700 /models
-ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 VK_DRIVER_FILES=/usr/share/vulkan/icd.d/radeon_icd.x86_64.json XDG_CACHE_HOME=/cache
+ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 VK_DRIVER_FILES=/opt/runtime/radeon_icd.json XDG_CACHE_HOME=/cache
 EXPOSE 8080
 ENTRYPOINT ["python", "/stack/engine-entrypoint.py"]

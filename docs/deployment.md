@@ -80,8 +80,8 @@ Docker 和镜像负责目录权限，不需宿主 UID/GID 或手工建数据目�
 
 每个镜像带 `sha-<完整 commit>` 及对应 branch/tag 标签。工作流收集四个 digest，生成固定引用的部署模板作为 Actions artifact；`v*` 标签额外上传为 Release asset。终端用户下载部署包即可，不需要了解构建矩阵。
 
-**首次发布后，仓库 owner 必须将四个 GHCR package 各设置为 Public 一次。** 新 package 默认 private，公开源码仓库不会自动公开镜像。在 GitHub 的个人 Packages 页面逐个进入 package settings，修改 visibility 为 Public，然后验证匿名拉取。REST API 未提供此 visibility 更新操作，Actions 不会自动完成。首次操作未完成时，匿名 `pull` 可能报拒绝访问；后续发布沿用 package 的公开设置。
+**首次发布后验证四个镜像能否匿名拉取，不以push成功推断可见性。** 已公开的镜像无需填写GitHub Token。若新package匿名拉取被拒绝，owner在GitHub个人Packages页面进入package settings，将visibility改为Public后再验证；工作流不调用不存在的REST visibility更新接口。
 
-引擎由 CI 编译固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 并使用 Debian bookworm Mesa 包，不依赖本机旧镜像或 runtime。新镜像仍需单独验证 GPU 可用性及实际性能。
+引擎由 CI 编译固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 并使用 Debian trixie Mesa 包，不依赖本机旧镜像或 runtime。新镜像仍需单独验证 GPU 可用性及实际性能。
 
 公开仓库与镜像发布已获授权；源码许可证尚未选择，保持 `UNLICENSED`。公开访问不等于授予源码开源许可证；分发 OpenViking、llama.cpp、Mesa 等组件时仍须履行其许可证和对应源码等义务。
