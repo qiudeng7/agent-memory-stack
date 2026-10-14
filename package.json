@@ -1,0 +1,21 @@
+{
+  "name": "agent-memory-stack",
+  "version": "0.1.0",
+  "private": true,
+  "license": "UNLICENSED",
+  "type": "module",
+  "packageManager": "pnpm@11.24.0",
+  "engines": { "node": ">=24 <25" },
+  "scripts": {
+    "build": "pnpm --filter @agent-memory-stack/llm-adapter build",
+    "typecheck": "pnpm --filter @agent-memory-stack/llm-adapter typecheck",
+    "test": "pnpm --filter @agent-memory-stack/llm-adapter test",
+    "check": "pnpm typecheck && pnpm test && pnpm build",
+    "start:llm": "pnpm --filter @agent-memory-stack/llm-adapter start",
+    "test:python": "python3 scripts/test-python.py"
+  },
+  "devDependencies": {
+    "@types/node": "24.19.2",
+    "typescript": "7.0.2"
+  }
+}

@@ -1,0 +1,94 @@
+name: agent-memory-stack
+
+x-common: &common
+  restart: unless-stopped
+  security_opt: [no-new-privileges:true]
+  cap_drop: [ALL]
+  logging: {driver: json-file, options: {max-size: 10m, max-file: "3"}}
+
+services:
+  llm-adapter:
+    <<: *common
+    image: "${LLM_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-llm:main}"
+    environment:
+      AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
+      LLM_PROVIDER: disabled
+    ports: ["127.0.0.1:1455:4010"]
+    volumes: [oauth:/var/lib/ams/oauth]
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
+    stop_grace_period: 30s
+    healthcheck:
+      test: [CMD, node, -e, "fetch('http://127.0.0.1:4010/health').then(r=>{if(!r.ok)process.exit(1)}).catch(()=>process.exit(1))"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  embedding:
+    <<: *common
+    image: "${EMBEDDING_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-embedding:main}"
+    environment:
+      AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
+      EMBEDDING_ENGINE_URL: http://embedding-engine:8080
+      EMBEDDING_CACHE_MIB: "${EMBEDDING_CACHE_MIB:-256}"
+      EMBEDDING_ENGINE_TIMEOUT_SECONDS: "180"
+      EMBEDDING_TIMEOUT_SECONDS: "300"
+    read_only: true
+    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
+    stop_grace_period: 30s
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health',timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+
+  embedding-engine:
+    <<: *common
+    image: "${ENGINE_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-engine:main}"
+    # Root owns the model volume and the mapped render node; no host UID/GID setup.
+    devices: ["${RENDER_DEVICE:-/dev/dri/renderD128}:/dev/dri/renderD128"]
+    environment:
+      AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
+      EMBEDDING_GPU_LAYERS: "${EMBEDDING_GPU_LAYERS:-999}"
+    volumes: [models:/models]
+    read_only: true
+    tmpfs:
+      - /tmp:rw,noexec,nosuid,size=64m
+      - /cache:rw,noexec,nosuid,size=128m
+    mem_limit: 8g
+    stop_grace_period: 30s
+    healthcheck:
+      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health',timeout=3)"]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 30m
+
+  openviking:
+    <<: *common
+    image: "${OPENVIKING_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-openviking:main}"
+    environment:
+      AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
+      OPENVIKING_SERVER_HOST: 0.0.0.0
+      OPENVIKING_SERVER_PORT: "1933"
+      OPENVIKING_CONFIG_FILE: /app/.openviking/ov.conf
+    ports: ["127.0.0.1:1933:1933"]
+    volumes:
+      - openviking:/app/.openviking
+      - {type: bind, source: ./ov.conf, target: /app/.openviking/ov.conf, read_only: true, bind: {create_host_path: false}}
+    depends_on:
+      llm-adapter: {condition: service_healthy}
+      embedding: {condition: service_healthy}
+      embedding-engine: {condition: service_healthy}
+    stop_grace_period: 2m
+    healthcheck:
+      test: [CMD, curl, -fsS, http://127.0.0.1:1933/ready]
+      interval: 30s
+      timeout: 5s
+      retries: 3
+      start_period: 60s
+
+volumes:
+  models:
+  oauth:
+  openviking:

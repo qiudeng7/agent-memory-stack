@@ -1,0 +1,542 @@
+[
+  {
+    "name": "llama-server",
+    "source": "llama.cpp-b11429-release/llama-server",
+    "size": 17864,
+    "sha256": "5faf410bbbc00a1b94b09ee01623699f255365628dfa73b1ee552d9e52a2231d"
+  },
+  {
+    "name": "libllama-server-impl.so",
+    "source": "llama.cpp-b11429-release/libllama-server-impl.so",
+    "size": 7498288,
+    "sha256": "0cb1fd100e7f018ac9ac0c5a3fc12aeef4cbe7614bb7ca8c686ec7d01c30810f"
+  },
+  {
+    "name": "libstdc++.so.6",
+    "source": "/usr/lib/libstdc++.so.6.0.36",
+    "size": 2939928,
+    "sha256": "f5fc7380f2ae46fa4053a64be04e7b98109f1066a4bbfff3c37042488aa0be0e"
+  },
+  {
+    "name": "libgcc_s.so.1",
+    "source": "/usr/lib/libgcc_s.so.1",
+    "size": 182512,
+    "sha256": "e618cb9c90c2eb3a1dad1cfea5b6c1eebcf2e799ad805976f4ae47bdd61c716a"
+  },
+  {
+    "name": "libc.so.6",
+    "source": "/usr/lib/libc.so.6",
+    "size": 2215072,
+    "sha256": "02c8c3d06180beee9c7d0392aa85736c7d19f274a81e7f8f0b3d9e28e0641524"
+  },
+  {
+    "name": "libllama-common.so.0",
+    "source": "llama.cpp-b11429-release/libllama-common.so.0",
+    "size": 6407088,
+    "sha256": "9329f7b28a8c82ad02764b66ce038a2383c28043e2158f134a35c01ddb64cc7d"
+  },
+  {
+    "name": "libmtmd.so.0",
+    "source": "llama.cpp-b11429-release/libmtmd.so.0",
+    "size": 1896696,
+    "sha256": "73018e85b4f11665025686dad28809777dcf0d1a7e65965e62f0b869d417dbea"
+  },
+  {
+    "name": "libllama.so.0",
+    "source": "llama.cpp-b11429-release/libllama.so.0",
+    "size": 4788880,
+    "sha256": "32e7a219942cb1c3e4a4c5df96f6804cf7f6c133f0bbb96e6ceaa3fd758712ba"
+  },
+  {
+    "name": "libggml.so.0",
+    "source": "llama.cpp-b11429-release/libggml.so.0",
+    "size": 55184,
+    "sha256": "354c630e37df7982af7b2d032aafdb0548f8e2f3a255ff0778027e531a357b82"
+  },
+  {
+    "name": "libggml-base.so.0",
+    "source": "llama.cpp-b11429-release/libggml-base.so.0",
+    "size": 931232,
+    "sha256": "35f4d050cae9cc55c9d1b3fc863763af975ee3a93b8eae2ec0e5d2b3874cf3c6"
+  },
+  {
+    "name": "libssl.so.3",
+    "source": "/usr/lib/libssl.so.3",
+    "size": 1015768,
+    "sha256": "f6409e9f083faae79a622c9534be6ed2456d0102cd8ea2b52eb18c9d72f1f41e"
+  },
+  {
+    "name": "libcrypto.so.3",
+    "source": "/usr/lib/libcrypto.so.3",
+    "size": 5926392,
+    "sha256": "a75a864dcda6ef9e4dc29fad4b7988ca832b904c3915a63c920062c40763dae1"
+  },
+  {
+    "name": "libm.so.6",
+    "source": "/usr/lib/libm.so.6",
+    "size": 1268336,
+    "sha256": "965106704753eefe8c31ae7da6daba3ead3d18c52b19b5fcc41178bcc4aa999d"
+  },
+  {
+    "name": "ld-linux-x86-64.so.2",
+    "source": "/usr/lib/ld-linux-x86-64.so.2",
+    "size": 263152,
+    "sha256": "f5e11cc62f8f2c24dff532982559f4303dba3b17e7450551372a88c8e7ea8757"
+  },
+  {
+    "name": "libgomp.so.1",
+    "source": "/usr/lib/libgomp.so.1.0.0",
+    "size": 363560,
+    "sha256": "d6c6309ee83dbe9b50bf38342489799a4822ee22451677730ff5542aa74bdefc"
+  },
+  {
+    "name": "libz.so.1",
+    "source": "/usr/lib/libz.so.1.3.2",
+    "size": 104464,
+    "sha256": "9ba92a0b85dc9b659e8f5e596a69452cec801def6ece0883a8a2c1f032e52397"
+  },
+  {
+    "name": "libbrotlienc.so.1",
+    "source": "/usr/lib/libbrotlienc.so.1.2.0",
+    "size": 780768,
+    "sha256": "8dbc539197d276310ce2750dcb73de5465a1259d46a5d1894e6138fd354bf5c7"
+  },
+  {
+    "name": "libbrotlidec.so.1",
+    "source": "/usr/lib/libbrotlidec.so.1.2.0",
+    "size": 55168,
+    "sha256": "0883fb05fa42aa6a883722098530ab08551ed317e38a2311f5c96e94dd460979"
+  },
+  {
+    "name": "libzstd.so.1",
+    "source": "/usr/lib/libzstd.so.1.5.7",
+    "size": 939976,
+    "sha256": "f023d49e85fb22057bfdd21857263d2638b73356c06f3b342f678a75212379f8"
+  },
+  {
+    "name": "libbrotlicommon.so.1",
+    "source": "/usr/lib/libbrotlicommon.so.1.2.0",
+    "size": 141264,
+    "sha256": "4f895094b7b6ff9c82909e6516bc9cf212e2ec5af451d39bf1bcbc5e5fa225b2"
+  },
+  {
+    "name": "curl",
+    "source": "/usr/bin/curl",
+    "size": 223536,
+    "sha256": "450474f8939a71e297282400fc83176a9532da9f8ab84524c2f2ed42e96748cc"
+  },
+  {
+    "name": "libcurl.so.4",
+    "source": "/usr/lib/libcurl.so.4.8.0",
+    "size": 1082984,
+    "sha256": "0126b6046cc17ae3b8a298397a348e43add21dd5c4d84a4d035e785eb2e060f6"
+  },
+  {
+    "name": "libnghttp3.so.9",
+    "source": "/usr/lib/libnghttp3.so.9.9.0",
+    "size": 160768,
+    "sha256": "7d826dfe4128cab08a32609c56d67c9ce1383295cbce7ac0fa50449704b7479a"
+  },
+  {
+    "name": "libngtcp2_crypto_ossl.so.0",
+    "source": "/usr/lib/libngtcp2_crypto_ossl.so.0.3.1",
+    "size": 47064,
+    "sha256": "867135c8d1f2787c1bd5eca09f204e086d6c2c1e3030613f1b5792d92034fb2f"
+  },
+  {
+    "name": "libngtcp2.so.16",
+    "source": "/usr/lib/libngtcp2.so.16.11.0",
+    "size": 374768,
+    "sha256": "524535e51383d20818e3878e0c819cae6249662dcfc168c0bfbb30aa8ba4f2b3"
+  },
+  {
+    "name": "libnghttp2.so.14",
+    "source": "/usr/lib/libnghttp2.so.14.29.5",
+    "size": 165928,
+    "sha256": "dc9f6c8c911dc14aef9585aed5cadf35ae5037175130753cd058d7eb353fb717"
+  },
+  {
+    "name": "libidn2.so.0",
+    "source": "/usr/lib/libidn2.so.0.4.0",
+    "size": 133064,
+    "sha256": "9a36fa67dc82ce0e5dc38ef190c76231f532676f7ba13e363fc1df16a9c50a15"
+  },
+  {
+    "name": "libssh2.so.1",
+    "source": "/usr/lib/libssh2.so.1.0.1",
+    "size": 317984,
+    "sha256": "8e31bb8758d4f780fd635aa47ca3c0306ccbfbadd7de6c85478a7d712d5ae4b4"
+  },
+  {
+    "name": "libpsl.so.5",
+    "source": "/usr/lib/libpsl.so.5.3.5",
+    "size": 75640,
+    "sha256": "b5189c9a4b32b15f0bb1bab989069acd2d0dc89723b990266ad5566cd16f1924"
+  },
+  {
+    "name": "libgssapi_krb5.so.2",
+    "source": "/usr/lib/libgssapi_krb5.so.2.2",
+    "size": 360736,
+    "sha256": "db71de39831ad557f7c75fadf772575f1180c4e1e7f83ec7318fabd78e129296"
+  },
+  {
+    "name": "libunistring.so.5",
+    "source": "/usr/lib/libunistring.so.5.2.1",
+    "size": 1992752,
+    "sha256": "ba7a4afb4b6f823d64ebe324416e182cd42a981dba049e3ddcfa1c9af03cb7f3"
+  },
+  {
+    "name": "libkrb5.so.3",
+    "source": "/usr/lib/libkrb5.so.3.3",
+    "size": 845896,
+    "sha256": "eb8369680ba30529b30abeaca57429b67f9af42ac43efdd5d95ca1901bb9c44c"
+  },
+  {
+    "name": "libk5crypto.so.3",
+    "source": "/usr/lib/libk5crypto.so.3.1",
+    "size": 182320,
+    "sha256": "e9ea7950674f25a6951b830036f95a595e1fc112247a69d11bc0003124ab7338"
+  },
+  {
+    "name": "libcom_err.so.2",
+    "source": "/usr/lib/libcom_err.so.2.1",
+    "size": 18376,
+    "sha256": "67ed8a11c44542ffdbaa04b3521f48729afddf936568632b6aa9d04c595316cd"
+  },
+  {
+    "name": "libkrb5support.so.0",
+    "source": "/usr/lib/libkrb5support.so.0.1",
+    "size": 55544,
+    "sha256": "941f17df15bc3ed160b392dee2930bd68565f445b8fe8d87ad522256c972967f"
+  },
+  {
+    "name": "libkeyutils.so.1",
+    "source": "/usr/lib/libkeyutils.so.1.10",
+    "size": 22480,
+    "sha256": "a82e692581b6215475c03538fa4b25681b5c71e8554c67afa7e34074b968b0d7"
+  },
+  {
+    "name": "libresolv.so.2",
+    "source": "/usr/lib/libresolv.so.2",
+    "size": 67904,
+    "sha256": "ee828b251a61761a9e529a791758ec8a1fbefd85693e2dc23501fedb8cf2f31d"
+  },
+  {
+    "name": "libggml-base.so",
+    "source": "llama.cpp-b11429-release/libggml-base.so",
+    "size": 931232,
+    "sha256": "35f4d050cae9cc55c9d1b3fc863763af975ee3a93b8eae2ec0e5d2b3874cf3c6"
+  },
+  {
+    "name": "libllama.so.0.6.0",
+    "source": "llama.cpp-b11429-release/libllama.so.0.6.0",
+    "size": 4788880,
+    "sha256": "32e7a219942cb1c3e4a4c5df96f6804cf7f6c133f0bbb96e6ceaa3fd758712ba"
+  },
+  {
+    "name": "libggml.so.0.26.0",
+    "source": "llama.cpp-b11429-release/libggml.so.0.26.0",
+    "size": 55184,
+    "sha256": "354c630e37df7982af7b2d032aafdb0548f8e2f3a255ff0778027e531a357b82"
+  },
+  {
+    "name": "libllama-common.so.0.6.0",
+    "source": "llama.cpp-b11429-release/libllama-common.so.0.6.0",
+    "size": 6407088,
+    "sha256": "9329f7b28a8c82ad02764b66ce038a2383c28043e2158f134a35c01ddb64cc7d"
+  },
+  {
+    "name": "libggml-cpu-icelake.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-icelake.so",
+    "size": 1589968,
+    "sha256": "c6579106a5f0f1cfd76902218c247858ffc5098c4f2f099864df643aa1d03f62"
+  },
+  {
+    "name": "libggml-cpu-zen4.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-zen4.so",
+    "size": 1585944,
+    "sha256": "16adc0bc91d85382b508430667415d4fc472221c5ac1d9ef6a88eb38db4ba50e"
+  },
+  {
+    "name": "libggml-cpu-skylakex.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-skylakex.so",
+    "size": 1577976,
+    "sha256": "e10d82e3c08f91397cc265e3a13199e92f994f1e6961cd1777a484175233ea7b"
+  },
+  {
+    "name": "libggml-cpu-alderlake.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-alderlake.so",
+    "size": 1428600,
+    "sha256": "d95ec54730283295bc7363ec842b5e1512dbae6523bf8106679a37f688ed367d"
+  },
+  {
+    "name": "libggml-base.so.0.26.0",
+    "source": "llama.cpp-b11429-release/libggml-base.so.0.26.0",
+    "size": 931232,
+    "sha256": "35f4d050cae9cc55c9d1b3fc863763af975ee3a93b8eae2ec0e5d2b3874cf3c6"
+  },
+  {
+    "name": "libggml-cpu-sapphirerapids.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-sapphirerapids.so",
+    "size": 1852272,
+    "sha256": "357dea6e5099e87d547e49a1f101f3e7c2e4283e4cf9518a4c220c0dcbe07b5f"
+  },
+  {
+    "name": "libggml-cpu-cannonlake.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-cannonlake.so",
+    "size": 1577976,
+    "sha256": "2bdf5f493bf9472112c4bd5e936cb0cd3f7235b1b4b3c636dea9d1a9489c1558"
+  },
+  {
+    "name": "libggml-vulkan.so",
+    "source": "llama.cpp-b11429-release/libggml-vulkan.so",
+    "size": 44315144,
+    "sha256": "bc151ce7639cf16e3c89006ae697ef3db77b2be5ebf398c8e7db32b4e7b0a4d0"
+  },
+  {
+    "name": "libvulkan.so.1",
+    "source": "llama.cpp-b11429-release/libvulkan.so.1",
+    "size": 694272,
+    "sha256": "22afcdef45c93ca9a550cfd3b85923c1aa00d751649e83248d3617bbefead19f"
+  },
+  {
+    "name": "libggml-cpu-sandybridge.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-sandybridge.so",
+    "size": 1346712,
+    "sha256": "3e04318845d9a9d9c8133d79925331a36d185f19fc9153b672c5b35da5c2b614"
+  },
+  {
+    "name": "libggml-cpu-cooperlake.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-cooperlake.so",
+    "size": 1585944,
+    "sha256": "c43f344af8f30204e0cbecc51f4755f45eecaa56c723ee87ba35e4f887a36909"
+  },
+  {
+    "name": "libllama.so",
+    "source": "llama.cpp-b11429-release/libllama.so",
+    "size": 4788880,
+    "sha256": "32e7a219942cb1c3e4a4c5df96f6804cf7f6c133f0bbb96e6ceaa3fd758712ba"
+  },
+  {
+    "name": "libggml-cpu-ivybridge.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-ivybridge.so",
+    "size": 1364216,
+    "sha256": "02a7121ebdb06b07cc0b7cc449aa724b6270edf5314113a65f90bd3fb863df45"
+  },
+  {
+    "name": "libllama-common.so",
+    "source": "llama.cpp-b11429-release/libllama-common.so",
+    "size": 6407088,
+    "sha256": "9329f7b28a8c82ad02764b66ce038a2383c28043e2158f134a35c01ddb64cc7d"
+  },
+  {
+    "name": "libggml.so",
+    "source": "llama.cpp-b11429-release/libggml.so",
+    "size": 55184,
+    "sha256": "354c630e37df7982af7b2d032aafdb0548f8e2f3a255ff0778027e531a357b82"
+  },
+  {
+    "name": "libggml-cpu-cascadelake.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-cascadelake.so",
+    "size": 1589968,
+    "sha256": "d8ecf1f83ed1a52f50f911853ac356047988d41cecf9121a8e0f3e94b6989c47"
+  },
+  {
+    "name": "libggml-cpu-sse42.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-sse42.so",
+    "size": 954352,
+    "sha256": "7012b4dcad03e5649cccda277fdeb1950872dd5bf5957680ad8d1a2d403898d0"
+  },
+  {
+    "name": "libggml-cpu-x64.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-x64.so",
+    "size": 942240,
+    "sha256": "6f92125d03aa6041931e1fb576d735fe2104120dcd80785559ff7cb7440b60ea"
+  },
+  {
+    "name": "libggml-rpc.so",
+    "source": "llama.cpp-b11429-release/libggml-rpc.so",
+    "size": 251224,
+    "sha256": "674f64cd4561acc0cb75043da84edc25a22a1aef1083ee963cb2879e4463c672"
+  },
+  {
+    "name": "libggml-cpu-haswell.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-haswell.so",
+    "size": 1428600,
+    "sha256": "bd7740021e3cbce4b49270e8c12f6a3bc6eed8cec00e548276d84a298d5911fa"
+  },
+  {
+    "name": "libggml-cpu-piledriver.so",
+    "source": "llama.cpp-b11429-release/libggml-cpu-piledriver.so",
+    "size": 1360120,
+    "sha256": "8c7d57b1a5afc23f688cefd70a835ff76e9be5bdd6c73dcfc649433118ec2ec2"
+  },
+  {
+    "name": "libvulkan_radeon.so",
+    "source": "llama.cpp-b11429-release/libvulkan_radeon.so",
+    "size": 19189496,
+    "sha256": "4023a59d1a1584ddd128634ca71cf8046a224b71937386fa50b54bc164898375"
+  },
+  {
+    "name": "libLLVM.so.23.1",
+    "source": "/usr/lib/libLLVM.so.23.1",
+    "size": 172592256,
+    "sha256": "a97595f25e9a6eea1a9cd6017c546116eb0d8cd7525eaaa47c2772a78db76a49"
+  },
+  {
+    "name": "libdrm_amdgpu.so.1",
+    "source": "/usr/lib/libdrm_amdgpu.so.1.134.0",
+    "size": 46976,
+    "sha256": "02bd5087b5f98d63fba8dad0a14185652e777ec1955883c6f7b7dc0a0854bc5a"
+  },
+  {
+    "name": "libelf.so.1",
+    "source": "/usr/lib/libelf-0.196.so",
+    "size": 116824,
+    "sha256": "13d3e3cb54d6120d87a0569ac67be05c029f8cd2e4bf44e75936b2721c8e08af"
+  },
+  {
+    "name": "libxcb-dri3.so.0",
+    "source": "/usr/lib/libxcb-dri3.so.0.1.0",
+    "size": 22496,
+    "sha256": "116d544940cb64e6b218dfe547434c309e1e99a5c208853c953cd6bb66b78717"
+  },
+  {
+    "name": "libwayland-client.so.0",
+    "source": "/usr/lib/libwayland-client.so.0.26.0",
+    "size": 60168,
+    "sha256": "39c83ae7b73d22f18b4f81da14749c4535c304b7e62910a2f1aae682f279cc9d"
+  },
+  {
+    "name": "libdrm.so.2",
+    "source": "/usr/lib/libdrm.so.2.134.0",
+    "size": 92104,
+    "sha256": "8b97afc5e15a07442768b302660cf844b0962623f8dcecbaebccadf288c611b1"
+  },
+  {
+    "name": "libxcb.so.1",
+    "source": "/usr/lib/libxcb.so.1.1.0",
+    "size": 169984,
+    "sha256": "40df5eff95408b67d969e559f2689b3e50e6151251b1f4e03608ce5cd9c9a133"
+  },
+  {
+    "name": "libX11-xcb.so.1",
+    "source": "/usr/lib/libX11-xcb.so.1.0.0",
+    "size": 13976,
+    "sha256": "aaade2a3a4900dc556f71b1712f9c4a36a74349fd5e566d6e223b810b285ab0f"
+  },
+  {
+    "name": "libxcb-present.so.0",
+    "source": "/usr/lib/libxcb-present.so.0.0.0",
+    "size": 14312,
+    "sha256": "d9f47da0e4925c706e83c1ea7572b2660c74a22b01c0f2b95723cc96a258f7c7"
+  },
+  {
+    "name": "libxcb-xfixes.so.0",
+    "source": "/usr/lib/libxcb-xfixes.so.0.0.0",
+    "size": 34792,
+    "sha256": "dad274e042c86866ac9b624a47c2f46648a291dbc1e11f8c906cd355ce60e38f"
+  },
+  {
+    "name": "libxcb-sync.so.1",
+    "source": "/usr/lib/libxcb-sync.so.1.0.0",
+    "size": 34784,
+    "sha256": "e5e6f35089a65d0d34761fdfb6ea9c74a86b9c7e57ab6fc56e1282491ad6bbd0"
+  },
+  {
+    "name": "libxcb-randr.so.0",
+    "source": "/usr/lib/libxcb-randr.so.0.1.0",
+    "size": 71648,
+    "sha256": "5db40f22bfc3a142d653d69669f509b971dc8cd36215e90f977158d109b3dbf5"
+  },
+  {
+    "name": "libxcb-shm.so.0",
+    "source": "/usr/lib/libxcb-shm.so.0.0.0",
+    "size": 14304,
+    "sha256": "e04329f8117411113e6094e3dc354ed50b8b3b10e6cf5f8a21a6b7bec4786eec"
+  },
+  {
+    "name": "libxshmfence.so.1",
+    "source": "/usr/lib/libxshmfence.so.1.0.0",
+    "size": 14208,
+    "sha256": "ac614957c4966511f815774fdafbd33dfad0d6142b1c52669343b160066e04d9"
+  },
+  {
+    "name": "libxcb-keysyms.so.1",
+    "source": "llama.cpp-b11429-release/libxcb-keysyms.so.1",
+    "size": 14208,
+    "sha256": "3ffbacf50c3bcf9390ce804492a39bd8e549d1b68908e4076444a2651c58468f"
+  },
+  {
+    "name": "libdisplay-info.so.3",
+    "source": "llama.cpp-b11429-release/libdisplay-info.so.3",
+    "size": 227200,
+    "sha256": "98f632c36bdd89d75914200cb6d1b3cfce8b21067e73845b8a6c4d959903f97f"
+  },
+  {
+    "name": "libudev.so.1",
+    "source": "/usr/lib/libudev.so.1.7.15",
+    "size": 326752,
+    "sha256": "5e41a27ff6a9c8016b16f4b69b41a1d63d51973d0df2c6a895ab51ba006b880c"
+  },
+  {
+    "name": "libexpat.so.1",
+    "source": "/usr/lib/libexpat.so.1.13.0",
+    "size": 190408,
+    "sha256": "0755d0589724746da578d47ee23bfa09ecee64d9bf8e6eab0c277e6757895395"
+  },
+  {
+    "name": "libSPIRV-Tools.so",
+    "source": "/usr/lib/libSPIRV-Tools.so",
+    "size": 1964720,
+    "sha256": "aebfb468a2d4284c43736bf7abe4aeedbc7420a06961877dff7f8ea993d8c1cc"
+  },
+  {
+    "name": "libffi.so.8",
+    "source": "/usr/lib/libffi.so.8.5.0",
+    "size": 51432,
+    "sha256": "b38bb3a55ba04dfbb5be68e881a72385d6c30010afffb1cf1dfc373b72c2278c"
+  },
+  {
+    "name": "libedit.so.0",
+    "source": "/usr/lib/libedit.so.0.0.78",
+    "size": 227440,
+    "sha256": "0bb14cee691695fd88a63c3cea14030ba4973c725239e15c1cd637c39d6a2007"
+  },
+  {
+    "name": "libxml2.so.16",
+    "source": "/usr/lib/libxml2.so.16.1.4",
+    "size": 1326024,
+    "sha256": "5ff12cee1e6992555ba638190cce88a0aab40acad51d5c826f6487888a0160ab"
+  },
+  {
+    "name": "libXau.so.6",
+    "source": "/usr/lib/libXau.so.6.0.0",
+    "size": 14232,
+    "sha256": "3e229dba702d7b56f1c58ac0e004ae691ae2ad5ede7b50968e1cd7d8b2ccdecc"
+  },
+  {
+    "name": "libXdmcp.so.6",
+    "source": "/usr/lib/libXdmcp.so.6.0.0",
+    "size": 26488,
+    "sha256": "0c572ba75de0f967c9c4d088161d3e435ea721bd99c169aae707aba6870a71b1"
+  },
+  {
+    "name": "libncursesw.so.6",
+    "source": "/usr/lib/libncursesw.so.6.6",
+    "size": 457936,
+    "sha256": "7498a0b0f75deb5417e109d1853679f1a6b201e52e03b247c914fec0a36e3a5b"
+  },
+  {
+    "name": "libicuuc.so.78",
+    "source": "/usr/lib/libicuuc.so.78.3",
+    "size": 2144304,
+    "sha256": "c99f0dd0c797c07f9ab64413d36c595393cdded6fa04cc4edd6f6a521fd155ca"
+  },
+  {
+    "name": "libicudata.so.78",
+    "source": "/usr/lib/libicudata.so.78.3",
+    "size": 33112920,
+    "sha256": "d72003b08760852bee4c80cff32c1e6248ae6b1fda5bd313482733a4d5e70dc9"
+  }
+]

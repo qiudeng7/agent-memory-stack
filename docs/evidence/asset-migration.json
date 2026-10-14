@@ -1,0 +1,37 @@
+{
+  "model": {
+    "path": ".models/Qwen3-Embedding-0.6B-Q8_0.gguf",
+    "size": 639150592,
+    "sha256": "06507c7b42688469c4e7298b0a1e16deff06caf291cf0a5b278c308249c3e439"
+  },
+  "runtime": {
+    "path": ".runtime/embedding-engine",
+    "file_count": 90,
+    "total_binary_bytes": 366302024,
+    "manifest": "deploy/embedding-engine/runtime-manifest.json"
+  },
+  "engine_image": "sha256:68391357f3da510f5b52dab191f7f09834a7fc6eafdfa7bbedc8b1c8c80f1fe7",
+  "retained_evidence": [
+    "original-engine-benchmark.json",
+    "embedding-results.json",
+    "docker-embedding-results.json",
+    "network-auth-results.json",
+    "qwen3-model-manifest.json",
+    "ghcr-v0.5.0-manifest.json",
+    "ghcr-v0.5.0-amd64-manifest.json",
+    "ghcr-v0.5.0-amd64-config.json"
+  ],
+  "retained_public_document_snapshots": 9,
+  "checks": {
+    "model_and_runtime_sha256": true,
+    "normal_and_optimized_validator": true,
+    "validator_tests": 5,
+    "offline_engine_image_build": true,
+    "engine_cli_version": "11429/d81235049",
+    "node_tests": 108,
+    "python_tests": 104,
+    "experimental_directory_deleted": true,
+    "independent_review": "passed"
+  },
+  "note": "Historical raw benchmark commands are retained verbatim as evidence; they are not active paths or startup instructions."
+}

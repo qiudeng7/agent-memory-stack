@@ -1,0 +1,19 @@
+{
+  "unauthenticated_health_status": 200,
+  "missing_key_status": 401,
+  "invalid_key_status": 401,
+  "valid_key_status": 200,
+  "bridge_client": {
+    "success": true,
+    "count": 2,
+    "dimensions": [
+      1024,
+      1024
+    ],
+    "norms": [
+      0.9999999573086414,
+      0.9999999872251424
+    ]
+  },
+  "success": true
+}

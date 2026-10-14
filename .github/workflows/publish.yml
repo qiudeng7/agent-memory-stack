@@ -1,0 +1,127 @@
+name: Test and publish GHCR
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  test:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '24'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+      - run: npm install --global pnpm@11.24.0
+      - run: pnpm install --frozen-lockfile && pnpm check
+      - name: Python application tests
+        run: |
+          python -m venv apps/embedding/.venv
+          apps/embedding/.venv/bin/python -m pip install --require-hashes -r apps/embedding/requirements-dev.lock
+          apps/embedding/.venv/bin/python -m pip install --no-deps --no-build-isolation -e apps/embedding
+          pnpm test:python
+      - run: python -m unittest discover -s scripts -p 'test_*.py'
+
+  publish:
+    if: github.event_name != 'pull_request'
+    needs: test
+    runs-on: ubuntu-24.04
+    timeout-minutes: 60
+    permissions:
+      contents: read
+      packages: write
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - image: llm
+            dockerfile: apps/llm-adapter/Dockerfile
+          - image: embedding
+            dockerfile: apps/embedding/Dockerfile
+          - image: engine
+            dockerfile: deploy/engine.Dockerfile
+          - image: openviking
+            dockerfile: deploy/openviking.Dockerfile
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: docker/setup-buildx-action@v3
+      - uses: docker/login-action@v3
+        with:
+          registry: ghcr.io
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+      - name: Image reference
+        id: ref
+        env:
+          REPOSITORY: ${{ github.repository }}
+          COMPONENT: ${{ matrix.image }}
+        run: echo "image=ghcr.io/${REPOSITORY,,}-${COMPONENT}" >> "$GITHUB_OUTPUT"
+      - uses: docker/build-push-action@v6
+        id: build
+        with:
+          context: .
+          file: ${{ matrix.dockerfile }}
+          platforms: linux/amd64
+          push: true
+          tags: |
+            ${{ steps.ref.outputs.image }}:sha-${{ github.sha }}
+            ${{ steps.ref.outputs.image }}:${{ github.ref_name }}
+          labels: |
+            org.opencontainers.image.source=https://github.com/${{ github.repository }}
+            org.opencontainers.image.revision=${{ github.sha }}
+          cache-from: type=gha,scope=${{ matrix.image }}
+          cache-to: type=gha,mode=max,scope=${{ matrix.image }}
+      - name: Record immutable reference
+        env:
+          COMPONENT: ${{ matrix.image }}
+          IMAGE: ${{ steps.ref.outputs.image }}
+          DIGEST: ${{ steps.build.outputs.digest }}
+        run: |
+          python - <<'PY'
+          import json, os
+          from pathlib import Path
+          Path('image-reference.json').write_text(json.dumps({os.environ['COMPONENT']: os.environ['IMAGE'] + '@' + os.environ['DIGEST']}))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: image-${{ matrix.image }}
+          path: image-reference.json
+          retention-days: 30
+
+  deployment:
+    needs: publish
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: image-*
+          path: image-references
+      - name: Package GHCR deployment templates
+        run: python3 scripts/package-deployment.py --references image-references
+      - uses: actions/upload-artifact@v4
+        with:
+          name: deployment
+          path: dist/agent-memory-stack-deploy.tar.gz
+          retention-days: 90
+      - name: Attach templates to version release
+        if: startsWith(github.ref, 'refs/tags/v')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          TAG: ${{ github.ref_name }}
+        run: gh release create "$TAG" dist/agent-memory-stack-deploy.tar.gz --verify-tag --generate-notes

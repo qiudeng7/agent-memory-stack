@@ -1,0 +1,18 @@
+{
+  "images": {
+    "llm": "sha256:99fe418bff3495149cc339e23cc60d3d63c32fb9a567bfd2d881b6675f509d62",
+    "embedding": "sha256:11b9c4137f12f0afc037b56316a434b184f7ab61a935276b615dfa8dbf2aaa92",
+    "engine": "sha256:c30458f4148a169d1cbf389bb7b87ffdce08622a1dd038efd3919d5ca0539fca",
+    "openviking": "sha256:99f037ec978249fb3d1621bac61701354965fc45b1bd9aeb882af59532263a68"
+  },
+  "network": "none",
+  "host_ports": false,
+  "synthetic_only": true,
+  "results": {
+    "llm": "health200 ready503 derived-admin200 master401; OAuth volume UID1000 mode0700 persists",
+    "embedding": "health200 ready503 derived-admin200 master401",
+    "engine": "native loader/version exit0; synthetic cold download+warm reuse; model volume root0700",
+    "openviking": "built-in readiness wait and SIGTERM exit0; root0700 volume writable with dropALL"
+  },
+  "cleanup": "all test containers and volumes removed"
+}

@@ -1,0 +1,256 @@
+{
+  "native": {
+    "cpu": {
+      "startup_seconds": 10.858588031027466,
+      "single_query_latency_seconds": {
+        "samples": [
+          0.8706860350212082,
+          2.3939231950207613,
+          3.2199727299739607,
+          2.696216325974092,
+          1.8107182219973765,
+          0.948943171009887,
+          1.7737843029899523,
+          4.979241797991563,
+          2.831478387990501,
+          1.6186510160332546,
+          1.4978669080301188,
+          0.5833041860023513,
+          0.7635628069983795,
+          1.3579895430011675,
+          1.1862419520039111,
+          1.0438793589710258,
+          1.0862827000091784,
+          1.653548376983963
+        ],
+        "median": 1.5582589620316867,
+        "maximum": 4.979241797991563
+      },
+      "long_document": {
+        "seconds": [
+          10.295078113034833,
+          9.407188515004236
+        ],
+        "usage": {
+          "prompt_tokens": 922,
+          "total_tokens": 922
+        },
+        "tokens_per_second": 93.5932923258551
+      },
+      "long_document_tokens": 922,
+      "success": true
+    },
+    "gpu": {
+      "startup_seconds": 3.01219298603246,
+      "single_query_latency_seconds": {
+        "samples": [
+          0.06677029997808859,
+          0.058468478033319116,
+          0.059840521949809045,
+          0.07106013200245798,
+          0.05894093099050224,
+          0.052893093961756676,
+          0.062435052008368075,
+          0.07451692200265825,
+          0.0637137180310674,
+          0.062970487982966,
+          0.0746670329826884,
+          0.05178060400066897,
+          0.060899598989635706,
+          0.07114160299533978,
+          0.055756263027433306,
+          0.054820837976876646,
+          0.05589483800577,
+          0.050256445014383644
+        ],
+        "median": 0.060370060469722375,
+        "maximum": 0.0746670329826884
+      },
+      "long_document": {
+        "seconds": [
+          0.7875533640035428,
+          0.6638890759786591
+        ],
+        "usage": {
+          "prompt_tokens": 922,
+          "total_tokens": 922
+        },
+        "tokens_per_second": 1270.4603015622251
+      },
+      "long_document_tokens": 922,
+      "success": true
+    }
+  },
+  "native_agreement": {
+    "count": 24,
+    "minimum_cosine": 0.9995586131844767,
+    "mean_cosine": 0.9996919102234713,
+    "all_cosines": [
+      0.9997199911557342,
+      0.9997331953075705,
+      0.9996527587308158,
+      0.9995830666425066,
+      0.999627326165172,
+      0.9997126229563984,
+      0.9996752412502867,
+      0.9997590830429116,
+      0.9996834484845958,
+      0.9996232720261707,
+      0.9997848129951387,
+      0.999612669571524,
+      0.9997204416824503,
+      0.9997400090970165,
+      0.9997333641886998,
+      0.9997097040164542,
+      0.99974323968838,
+      0.9997909158417723,
+      0.9996270778578825,
+      0.9997166470124321,
+      0.999643546389843,
+      0.9995586131844767,
+      0.99974623131443,
+      0.9997085667606479
+    ]
+  },
+  "retrieval": {
+    "cpu": [
+      {
+        "query_instruction": false,
+        "hit_at_1": 4,
+        "hit_at_3": 6
+      },
+      {
+        "query_instruction": true,
+        "hit_at_1": 5,
+        "hit_at_3": 6
+      }
+    ],
+    "gpu": [
+      {
+        "query_instruction": false,
+        "hit_at_1": 4,
+        "hit_at_3": 6
+      },
+      {
+        "query_instruction": true,
+        "hit_at_1": 5,
+        "hit_at_3": 6
+      }
+    ]
+  },
+  "docker": {
+    "cpu": {
+      "image_id": "sha256:b01c5240ecf3e1ff8e5e9b5fe7c94ecb2f207cdd28295dc6832c0a00fa095d5a",
+      "median_query_seconds": 0.18821111804572865,
+      "dimension": 1024,
+      "l2_norm": 0.9999999794722282,
+      "long_text": {
+        "tokenize_count": 882,
+        "usage": {
+          "prompt_tokens": 882,
+          "total_tokens": 882
+        },
+        "seconds": 6.61113229295006
+      },
+      "context_boundary": {
+        "tokens": 2047,
+        "seconds": 19.491683734988328,
+        "successful": true
+      },
+      "over_context": {
+        "status": 400,
+        "error": {
+          "error": {
+            "code": 400,
+            "message": "request (2048 tokens) exceeds the available context size (2048 tokens), try increasing it",
+            "type": "exceed_context_size_error",
+            "n_prompt_tokens": 2048,
+            "n_ctx": 2048
+          }
+        }
+      },
+      "docker_stats": {
+        "BlockIO": "0B / 0B",
+        "CPUPerc": "0.00%",
+        "Container": "openviking-eval-cpu-1934730",
+        "ID": "ab2035beb767",
+        "MemPerc": "8.20%",
+        "MemUsage": "336MiB / 4GiB",
+        "Name": "openviking-eval-cpu-1934730",
+        "NetIO": "10.9kB / 137kB",
+        "PIDs": "13"
+      },
+      "success": true
+    },
+    "gpu": {
+      "image_id": "sha256:b01c5240ecf3e1ff8e5e9b5fe7c94ecb2f207cdd28295dc6832c0a00fa095d5a",
+      "median_query_seconds": 0.05085505795432255,
+      "dimension": 1024,
+      "l2_norm": 0.9999999628232197,
+      "long_text": {
+        "tokenize_count": 882,
+        "usage": {
+          "prompt_tokens": 882,
+          "total_tokens": 882
+        },
+        "seconds": 0.8179505879525095
+      },
+      "context_boundary": {
+        "tokens": 2047,
+        "seconds": 2.0513869780115783,
+        "successful": true
+      },
+      "over_context": {
+        "status": 400,
+        "error": {
+          "error": {
+            "code": 400,
+            "message": "request (2048 tokens) exceeds the available context size (2048 tokens), try increasing it",
+            "type": "exceed_context_size_error",
+            "n_prompt_tokens": 2048,
+            "n_ctx": 2048
+          }
+        }
+      },
+      "docker_stats": {
+        "BlockIO": "0B / 0B",
+        "CPUPerc": "0.00%",
+        "Container": "openviking-eval-gpu-1934730",
+        "ID": "d79ea0a99878",
+        "MemPerc": "4.84%",
+        "MemUsage": "99.14MiB / 2GiB",
+        "Name": "openviking-eval-gpu-1934730",
+        "NetIO": "13.1kB / 139kB",
+        "PIDs": "15"
+      },
+      "success": true
+    }
+  },
+  "docker_cpu_gpu_cosine": 0.9997288481965316,
+  "network_auth": {
+    "unauthenticated_health_status": 200,
+    "missing_key_status": 401,
+    "invalid_key_status": 401,
+    "valid_key_status": 200,
+    "bridge_client": {
+      "success": true,
+      "count": 2,
+      "dimensions": [
+        1024,
+        1024
+      ],
+      "norms": [
+        0.9999999573086414,
+        0.9999999872251424
+      ]
+    },
+    "success": true
+  },
+  "native_resource_monitor_valid": false,
+  "notes": [
+    "Native sysfs resource monitor encountered EBUSY; do not claim measured peak RAM/VRAM.",
+    "Docker statistics are a short-request snapshot, not peak or VRAM.",
+    "CPU 2GiB was OOM-killed on 2047-token test; 4GiB retest passed.",
+    "At context=2048, 2047 input tokens passed and 2048 were rejected with HTTP400."
+  ]
+}

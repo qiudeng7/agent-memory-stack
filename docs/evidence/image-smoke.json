@@ -1,0 +1,47 @@
+{
+  "process_probes": [
+    {
+      "service": "llm",
+      "image_id": "sha256:48f117cccb5b7d1e78820c56937c7ef01d3e9ac3566275627ac604bb8fc10b6d",
+      "probes": [
+        {
+          "path": "/health",
+          "status": 200
+        },
+        {
+          "path": "/ready",
+          "status": 503
+        },
+        {
+          "path": "/v1/models",
+          "status": 503
+        }
+      ],
+      "privileged": false,
+      "network": "none",
+      "host_ports": 0
+    },
+    {
+      "service": "embedding",
+      "image_id": "sha256:c92cba241b82570fc4f4693572858643791d38c1efb6e77b6b94cef7d59006bb",
+      "probes": [
+        {
+          "path": "/health",
+          "status": 200
+        },
+        {
+          "path": "/ready",
+          "status": 503
+        },
+        {
+          "path": "/v1/models",
+          "status": 503
+        }
+      ],
+      "privileged": false,
+      "network": "none",
+      "host_ports": 0
+    }
+  ],
+  "live_oauth_or_inference": false
+}

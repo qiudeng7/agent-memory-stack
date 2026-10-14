@@ -1,0 +1,177 @@
+{
+  "architecture": "amd64",
+  "config": {
+    "ExposedPorts": {
+      "1933/tcp": {}
+    },
+    "Env": [
+      "PATH=/app/.venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "PYTHON_VERSION=3.13.16",
+      "PYTHON_SHA256=f4b1bfb3c79b5bb11b8d228a12504163b4c0dab4d679828d8f5f26b6cb6ab35d",
+      "HOME=/app",
+      "OPENVIKING_CONFIG_FILE=/app/.openviking/ov.conf",
+      "OPENVIKING_CLI_CONFIG_FILE=/app/.openviking/ovcli.conf"
+    ],
+    "Entrypoint": [
+      "openviking-entrypoint"
+    ],
+    "WorkingDir": "/app/.openviking",
+    "Labels": {
+      "org.opencontainers.image.created": "2026-10-09T15:47:17.111Z",
+      "org.opencontainers.image.description": "Self-evolving Context Database for AI Agents. Unify Agent Memory, Knowledge RAG and Skills.",
+      "org.opencontainers.image.licenses": "AGPL-3.0",
+      "org.opencontainers.image.revision": "20f9c11362ad16193b0daa4a414e1095061af427",
+      "org.opencontainers.image.source": "https://github.com/volcengine/OpenViking",
+      "org.opencontainers.image.title": "OpenViking",
+      "org.opencontainers.image.url": "https://github.com/volcengine/OpenViking",
+      "org.opencontainers.image.version": "v0.5.0"
+    },
+    "Healthcheck": {
+      "Test": [
+        "CMD",
+        "openviking-entrypoint",
+        "--healthcheck"
+      ],
+      "Interval": 30000000000,
+      "Timeout": 5000000000,
+      "StartPeriod": 30000000000,
+      "Retries": 3
+    }
+  },
+  "created": "2026-10-09T16:03:24.238531544Z",
+  "history": [
+    {
+      "created": "2026-10-05T00:00:00Z",
+      "created_by": "# debian.sh --arch 'amd64' out/ 'trixie' '@1791158400'",
+      "comment": "debuerreotype 0.17"
+    },
+    {
+      "created": "2026-10-06T01:55:29.7211836Z",
+      "created_by": "ENV PATH=/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-06T01:55:29.7211836Z",
+      "created_by": "RUN /bin/sh -c set -eux; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tca-certificates \t\tnetbase \t\ttzdata \t; \tapt-get dist-clean # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-06T01:55:29.7211836Z",
+      "created_by": "ENV GPG_KEY=7169605F62C751356D054A26A821E680E5FA6305",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-06T01:55:29.7211836Z",
+      "created_by": "ENV PYTHON_VERSION=3.13.16",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-06T01:55:29.7211836Z",
+      "created_by": "ENV PYTHON_SHA256=f4b1bfb3c79b5bb11b8d228a12504163b4c0dab4d679828d8f5f26b6cb6ab35d",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-06T02:05:24.087527734Z",
+      "created_by": "RUN /bin/sh -c set -eux; \t\tsavedAptMark=\"$(apt-mark showmanual)\"; \tapt-get update; \tapt-get install -y --no-install-recommends \t\tdpkg-dev \t\tg++ \t\tgcc \t\tgnupg \t\tlibbluetooth-dev \t\tlibbz2-dev \t\tlibc6-dev \t\tlibdb-dev \t\tlibffi-dev \t\tlibgdbm-dev \t\tliblzma-dev \t\tlibncursesw5-dev \t\tlibreadline-dev \t\tlibsqlite3-dev \t\tlibssl-dev \t\tmake \t\ttk-dev \t\tuuid-dev \t\twget \t\txz-utils \t\tzlib1g-dev \t; \t\twget -O python.tar.xz \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz\"; \techo \"$PYTHON_SHA256 *python.tar.xz\" | sha256sum -c -; \twget -O python.tar.xz.asc \"https://www.python.org/ftp/python/${PYTHON_VERSION%%[a-z]*}/Python-$PYTHON_VERSION.tar.xz.asc\"; \tGNUPGHOME=\"$(mktemp -d)\"; export GNUPGHOME; \tgpg --batch --keyserver hkps://keys.openpgp.org --recv-keys \"$GPG_KEY\"; \tgpg --batch --verify python.tar.xz.asc python.tar.xz; \tgpgconf --kill all; \trm -rf \"$GNUPGHOME\" python.tar.xz.asc; \tmkdir -p /usr/src/python; \ttar --extract --directory /usr/src/python --strip-components=1 --file python.tar.xz; \trm python.tar.xz; \t\tcd /usr/src/python; \tgnuArch=\"$(dpkg-architecture --query DEB_BUILD_GNU_TYPE)\"; \t./configure \t\t--build=\"$gnuArch\" \t\t--enable-loadable-sqlite-extensions \t\t--enable-optimizations \t\t--enable-option-checking=fatal \t\t--enable-shared \t\t$(test \"${gnuArch%%-*}\" != 'riscv64' && echo '--with-lto') \t\t--with-ensurepip \t; \tnproc=\"$(nproc)\"; \tEXTRA_CFLAGS=\"$(dpkg-buildflags --get CFLAGS)\"; \tLDFLAGS=\"$(dpkg-buildflags --get LDFLAGS)\"; \tLDFLAGS=\"${LDFLAGS:-} -Wl,--strip-all\"; \tarch=\"$(dpkg --print-architecture)\"; arch=\"${arch##*-}\"; \tcase \"$arch\" in \t\tamd64|arm64) \t\t\tEXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer -mno-omit-leaf-frame-pointer\"; \t\t\t;; \t\ti386) \t\t\t;; \t\t*) \t\t\tEXTRA_CFLAGS=\"${EXTRA_CFLAGS:-} -fno-omit-frame-pointer\"; \t\t\t;; \tesac; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-}\" \t; \trm python; \tmake -j \"$nproc\" \t\t\"EXTRA_CFLAGS=${EXTRA_CFLAGS:-}\" \t\t\"LDFLAGS=${LDFLAGS:-} -Wl,-rpath='\\$\\$ORIGIN/../lib'\" \t\tpython \t; \tmake install; \t\tcd /; \trm -rf /usr/src/python; \t\tfind /usr/local -depth \t\t\\( \t\t\t\\( -type d -a \\( -name test -o -name tests -o -name idle_test \\) \\) \t\t\t-o \\( -type f -a \\( -name '*.pyc' -o -name '*.pyo' -o -name 'libpython*.a' \\) \\) \t\t\\) -exec rm -rf '{}' + \t; \t\tldconfig; \t\tapt-mark auto '.*' > /dev/null; \tapt-mark manual $savedAptMark; \tfind /usr/local -type f -executable -not \\( -name '*tkinter*' \\) -exec ldd '{}' ';' \t\t| awk '/=>/ { so = $(NF-1); if (index(so, \"/usr/local/\") == 1) { next }; gsub(\"^/(usr/)?\", \"\", so); printf \"*%s\\n\", so }' \t\t| sort -u \t\t| xargs -rt dpkg-query --search \t\t| awk 'sub(\":$\", \"\", $1) { print $1 }' \t\t| sort -u \t\t| xargs -r apt-mark manual \t; \tapt-get purge -y --auto-remove -o APT::AutoRemove::RecommendsImportant=false; \tapt-get dist-clean; \t\texport PYTHONDONTWRITEBYTECODE=1; \tpython3 --version; \tpip3 --version # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-06T02:05:24.190948597Z",
+      "created_by": "RUN /bin/sh -c set -eux; \tfor src in idle3 pip3 pydoc3 python3 python3-config; do \t\tdst=\"$(echo \"$src\" | tr -d 3)\"; \t\t[ -s \"/usr/local/bin/$src\" ]; \t\t[ ! -e \"/usr/local/bin/$dst\" ]; \t\tln -svT \"$src\" \"/usr/local/bin/$dst\"; \tdone # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-06T02:05:24.190948597Z",
+      "created_by": "CMD [\"python3\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-09T15:47:37.517163194Z",
+      "created_by": "RUN /bin/sh -c apt-get update && apt-get install -y --no-install-recommends     ca-certificates     curl     git     libstdc++6  && rm -rf /var/lib/apt/lists/* # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T15:47:37.656315891Z",
+      "created_by": "WORKDIR /app/.openviking",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:22.64742569Z",
+      "created_by": "COPY /app/.venv /app/.venv # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:24.078895998Z",
+      "created_by": "RUN /bin/sh -c /app/.venv/bin/python -I -c \"import inspect; from importlib.metadata import version; from openviking_sdk.client import AsyncHTTPClient; signature = inspect.signature(AsyncHTTPClient.get_skill); raise SystemExit(0 if 'include_integrity' in signature.parameters else f\\\"incompatible openviking-sdk {version('openviking-sdk')}: AsyncHTTPClient.get_skill{signature} lacks include_integrity\\\")\" # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:24.16303341Z",
+      "created_by": "RUN /bin/sh -c /app/.venv/bin/python -I -c \"from importlib.util import find_spec; from pathlib import Path; spec = find_spec('openviking.web_studio'); locations = list(spec.submodule_search_locations or ()) if spec else []; root = Path('/app/.venv').resolve(); p = (Path(locations[0]).resolve() / 'dist/index.html').resolve() if len(locations) == 1 else None; valid = p is not None and p.is_file() and p.is_relative_to(root); raise SystemExit(0 if valid else f'missing or misplaced Studio bundle: spec_found={spec is not None}, locations={locations!r}, resource={p}')\" # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:24.172110839Z",
+      "created_by": "COPY deploy/docker/openviking-entrypoint.sh /usr/local/bin/openviking-entrypoint # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:24.17951214Z",
+      "created_by": "COPY deploy/docker/pending_health_server.py /usr/local/bin/openviking-pending-health # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:24.238531544Z",
+      "created_by": "RUN /bin/sh -c mkdir -p /app/.openviking  && sed -i 's/\\r$//' /usr/local/bin/openviking-entrypoint /usr/local/bin/openviking-pending-health  && chmod +x /usr/local/bin/openviking-entrypoint /usr/local/bin/openviking-pending-health # buildkit",
+      "comment": "buildkit.dockerfile.v0"
+    },
+    {
+      "created": "2026-10-09T16:03:24.238531544Z",
+      "created_by": "ENV HOME=/app PATH=/app/.venv/bin:/usr/local/bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin OPENVIKING_CONFIG_FILE=/app/.openviking/ov.conf OPENVIKING_CLI_CONFIG_FILE=/app/.openviking/ovcli.conf",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-09T16:03:24.238531544Z",
+      "created_by": "EXPOSE map[1933/tcp:{}]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-09T16:03:24.238531544Z",
+      "created_by": "HEALTHCHECK &{[\"CMD\" \"openviking-entrypoint\" \"--healthcheck\"] \"30s\" \"5s\" \"30s\" \"0s\" '\\x03'}",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    },
+    {
+      "created": "2026-10-09T16:03:24.238531544Z",
+      "created_by": "ENTRYPOINT [\"openviking-entrypoint\"]",
+      "comment": "buildkit.dockerfile.v0",
+      "empty_layer": true
+    }
+  ],
+  "os": "linux",
+  "rootfs": {
+    "type": "layers",
+    "diff_ids": [
+      "sha256:15f1c8eb1ab18eae260c7fb6296434cbe1ff0e1e30fd814ae92a80dd54005e62",
+      "sha256:285510654d1d6a26507ed6576cae8fa995ba16469050787032499e9a34cbe9f5",
+      "sha256:acbf34fa608c522642659b109edfd70959b7c26593ea51141f3d339cc1875cfd",
+      "sha256:d175833b7147479e4e08f4f5d9dd2055b5ee746dc2f73520462468538d168bf6",
+      "sha256:897aeca7b6227bcb9bd741edf65ea943631fec667ea19342e1a37e3ba95c5142",
+      "sha256:30d5d000f3dc5175ab2f22a5debca699e642c5eda23bf9555f6b05b8b57caa16",
+      "sha256:9248a1678712cdc2391363cbc6f734f534e1e8157c1792104aa4465dd99fcfd9",
+      "sha256:a0bd220804087c222b15f56d3fc9918084b291d295399c5c8024709024ca00c5",
+      "sha256:5f70bf18a086007016e948b04aed3b82103a36bea41755b6cddfaf10ace3c6ef",
+      "sha256:1191b7703c2058b44447d7532a2b9f91f6ae9e3a341150116d69a0e159357678",
+      "sha256:959025231d46a3fbdb231cf95b441b21848392c4c31c0e2b6eb1ce8b4ee8fb3f",
+      "sha256:908a51c70917e9a37016ad327f1067e6689e648dd9dd91fd2fa4be150d27b706"
+    ]
+  }
+}

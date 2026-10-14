@@ -1,0 +1,830 @@
+Registration and sign-in – Sign in with ChatGPT | OpenAI Developers
+For the complete documentation index, see llms.txt. Markdown versions of documentation pages are available by appending
+.md to the page URL.
+ChatGPT
+Start searching
+API Dashboard
+Try ChatGPT
+Home
+API
+Overview
+Get started with the OpenAI API
+Models
+Explore models and compare capabilities
+Agents
+Build persistent agents on hosted infrastructure
+Tools
+Connect models to tools and data
+Audio & voice
+Build speech and realtime voice experiences
+Production
+Deploy and scale your API integrations
+API reference
+Explore endpoints, parameters, and responses
+ChatGPT
+Plugins
+Extend ChatGPT and Codex
+Sign in with ChatGPT
+Apps powered by your user's ChatGPT plan
+Commerce
+Build commerce flows in ChatGPT
+Ads
+Publish and measure ads in ChatGPT
+Workspace Agents
+Trigger published ChatGPT workspace agents
+ChatGPT + Codex user docs
+Guides and product docs for ChatGPT and Codex
+Use cases
+Example workflows and tasks teams can take on with ChatGPT or Codex
+Docs
+Use cases
+Training
+Resources
+Resources
+Showcase
+Demo apps to get inspired
+Blog
+Learnings and experiences from developers
+Cookbook
+Notebook examples for building with OpenAI models
+Learn
+Docs, videos, and demo apps for building with OpenAI
+Community
+Programs, meetups, and support for builders
+Overview      Plugins      Sign in with ChatGPT      Commerce      Ads      Workspace Agents      User Docs
+Search the ChatGPT docs
+Search docs
+Suggested
+responses createreasoning_effortrealtimeprompt caching
+Primary navigation
+API  ChatGPT  Docs  Use cases  Training  Resources  Resources
+Search docs
+Suggested
+responses createreasoning_effortrealtimeprompt caching
+Overview  Models  Agents  Tools  Audio & voice  Production  API reference
+DocsOverview
+Home
+Get started
+Quickstart
+Using GPT-6
+Key concepts
+Core concepts
+Responses API
+Decisions API
+Conversation state
+Background mode
+Streaming
+WebSocket mode
+Mid-turn steering
+Multi-agent
+Webhooks
+File inputs
+Compaction
+Counting tokens
+SDKs and CLI
+OpenAI SDK
+OpenAI CLI
+Resources
+Changelog
+Deprecations
+Supported countries
+OpenAI Crawlers
+Terms and policies
+Legacy APIs
+Agent Builder
+Overview
+Migration guide
+Node reference
+Safety in building agents
+Evals
+Getting started
+Working with evals
+Prompt optimizer
+External models
+Graders
+Fine-tuning
+Optimization cycle
+Supervised fine-tuning
+Vision fine-tuning
+Direct preference optimization
+Reinforcement fine-tuning
+RFT use cases
+Best practices
+Assistants API
+Migration guide
+Model catalog
+Choose a model
+Pricing
+Model selection
+Text and code
+Text generation
+Code generation
+Structured output
+Prompting
+Overview
+Prompt engineering
+Citation formatting
+Migration guide
+Prompt generation
+Frontend prompting
+Reasoning
+Reasoning models
+Reasoning best practices
+Images
+Images and vision
+Image input cost calculator
+Image generation
+Overview
+Image prompting
+Realtime and audio
+Audio and speech
+Getting started
+Voice agents
+Specialized models
+Deep research
+Embeddings
+Moderation
+Overview
+Agents API
+Overview
+Quickstart
+Architecture
+Configuring Agents
+Sessions
+Run and continue sessions
+Events and items
+Manage sessions
+Webhooks
+Environments and sandboxes
+OpenAI-hosted sandboxes
+Self-hosted sandboxes
+Sandbox lifecycle
+Pre-warm sandboxes
+Sandbox security
+Files and artifacts
+Tools and integrations
+Web search
+Computer use
+Functions
+MCP connections
+Plugins
+Vaults
+Multi-agent
+Observability and usage
+Tracing
+Errors and recovery
+API reference
+Bedrock Managed Agents
+Agents SDK
+Overview
+Quickstart
+Agent definitions
+Models and providers
+Running agents
+Sandbox agents
+Orchestration
+Guardrails
+Results and state
+Integrations and observability
+Evaluate agent workflows
+ChatKit
+Overview
+Customize
+Widgets
+Actions
+Advanced integrations
+Overview
+Function calling
+Search and retrieval
+Web search
+File search
+Retrieval
+Connect tools and data
+MCP servers
+Secure MCP Tunnel
+Build tool workflows
+Skills
+Tool search
+Programmatic tool calling
+Async tool calling
+Computer and code
+Shell
+Computer use
+Apply Patch
+Local shell
+Code interpreter
+Media
+Image generation
+Overview
+GPT-Live
+Getting started
+Prompting
+Managing sessions
+Delegation and tools
+Migrate to GPT-Live
+Partner integrations
+Realtime API
+Getting started
+Prompting
+Managing conversations
+Voice activity detection
+Tools and MCP
+Build with voice
+Voice agents
+Connect voice to Decisions
+Custom voices
+Cost optimization
+Connections
+WebRTC
+WebRTC with WARP
+WebSockets
+Telephony and SIP
+Server-side controls
+Audio processing
+File transcription
+Live transcription
+Live translation
+Text to speech
+Audio in Chat Completions
+Go live
+Production best practices
+Deployment checklist
+Performance and quality
+Fast mode
+Ultrafast mode
+Latency optimization
+Predicted Outputs
+Accuracy optimization
+Evaluation
+Evaluation best practices
+Promptfoo
+Cost and throughput
+Cost optimization
+Prompt caching
+Prompt cache diagnostics
+Batch
+Flex processing
+Safety and governance
+Safety best practices
+Red teaming
+Daybreak
+Safety checks
+Safety classifiers
+Cybersecurity checks
+Misalignment monitoring
+Enforcement notifications
+Under-18 guidance
+CSAM guidance
+Content provenance
+Your data
+Private Safety Processing
+Permissions
+Infrastructure and access
+Terraform provider
+Overview
+Projects and access
+Service accounts
+Rate limits and spend
+Model, tool, and data controls
+Import and reconciliation
+Private Link
+IP allowlist
+Organization blocking
+Mutual TLS
+Workload identity federation
+Federation rules
+X.509 certificates
+Kubernetes
+AWS
+Microsoft Azure
+Google Cloud
+Oracle Cloud Infrastructure
+GitHub Actions
+SPIFFE
+IP egress ranges
+Amazon Bedrock
+Operations
+Rate limits
+Spend limits
+Admin APIs
+Error codes
+Overview   Plugins  Sign in with ChatGPT  Commerce  Ads  Workspace Agents  ChatGPT + Codex user docs   Use cases
+DocsSign in with ChatGPT
+Home
+Quickstart
+Core concepts
+Plugin architecture
+Skills
+MCP server
+Plan
+Brainstorm use cases
+Define tools
+Build
+Build an MCP server
+Add UI to your MCP server (optional)
+Add events to your MCP server (optional)
+Extensions
+Authenticate users
+Build skills
+Package your plugin
+Examples
+Test and publish
+Connect and test your plugin
+Submit and publish
+Submit desktop-only plugins
+Submission error reference
+Conversion specs
+Restaurant reservation spec
+Get Quote spec
+Product checkout spec
+Guides
+UI guidelines
+Optimize Metadata
+Submit a Claude Code plugin
+Security & Privacy
+Troubleshooting
+Resources
+Changelog
+Plugin guidelines
+MCP server review requirements
+Plugin UI reference
+Checkout API reference
+Home
+Quickstart
+Request a client ID
+Identity
+On your website
+In your ChatGPT plugin
+ChatGPT plan usage
+Overview
+UI/UX guidelines
+Registration and sign-in
+Accounts and sessions
+Models and inference
+Codex app-server
+Self-hosted VMs
+Token reference
+Errors and recovery
+Preview limitations
+Home
+Guides
+Get started
+Best practices
+File Upload
+Overview
+Products
+API
+Overview
+Feeds
+Products
+Promotions
+Ads Overview
+Measurement
+Measurement Pixel
+Multiple Pixels (Advanced)
+Image Tag
+Conversions API
+Supported Events
+Advertiser API
+Overview
+API Partner Setup
+Campaign Management
+Bidding & Budgets
+Targeting
+Product Feeds
+Hotel Feeds (limited beta)
+Conversion Tracking
+Reporting
+Troubleshooting
+Account Management
+API Reference
+Authentication
+Ad Account
+Audit Logs
+Campaigns
+Ad Groups
+Ads
+Insights
+Files
+Conversion Setup
+Home
+Get started
+Trigger workspace agent runs
+Authenticate with Workspace Agent access tokens
+Overview  Features  Configuration  Developers  Security  Administration  Use Cases  Resources
+DocsOverview
+Home
+Get started
+Quickstart
+Use ChatGPT
+Get started with Work
+Meet dots
+Import from another agent
+Foundations
+Prompting
+Model selection
+Personalize ChatGPT
+Skills & Plugins
+Permissions
+Explore
+What's new
+Models
+Pricing
+Glossary
+Available on
+ChatGPT desktop app
+ChatGPT mobile app
+ChatGPT on the web
+Codex CLI
+Codex IDE extension
+Codex Cloud
+Releases
+Changelog
+Feature Maturity
+Open Source
+Overview
+Workflows
+Projects and chats
+Sites
+Build plugins
+Visualizations
+Scheduled tasks
+Long-running work
+Notifications
+Pets
+Codex Micro
+Capabilities
+Browser
+Computer use
+Voice
+Plugins
+Sign in with ChatGPT
+Web search
+Image generation
+Image inputs
+Appshots
+Browser extension
+Work with files
+dots
+Meet dots
+Getting started
+Messaging
+Tasks and memory
+Computers and apps
+Controls
+ChatGPT Space
+Overview
+Getting started
+Pages
+Work with agents
+Collaboration
+Reference
+Commands
+Slash commands
+Settings
+Troubleshooting
+Overview
+Customization
+Overview
+Memories
+Computer History
+Config file
+Config Basics
+Advanced Config
+Config Reference
+Environment Variables
+Sample Config
+Agent configuration
+AGENTS.md
+Subagents
+Speed
+Rules
+Extend ChatGPT and Codex
+Record & Replay
+MCP
+Linux
+Desktop app
+Windows
+Desktop app
+Windows sandbox
+WSL
+Overview
+Development workflows
+Code review
+Integrated terminal
+Extend and automate
+Build skills
+Site tools (WebMCP)
+Annotations Extensibility
+Hooks
+Environments
+Modes
+Local environments
+Git worktrees
+Codex Cloud
+Cloud environments
+Build with Codex
+Codex SDK
+App Server
+GitHub Action
+Non-interactive mode
+Third-party integrations
+GitHub
+GitLab (Beta)
+Slack
+Linear
+Reference
+CLI customization
+Developer commands
+Developer settings
+Overview
+Permissions
+Profiles
+Sandboxing
+Auto-review
+Agent approvals & security
+Codex Security
+Overview
+Codex Security plugin
+Quickstart
+Run a security scan
+Run a deep scan
+Review code changes
+Use the Security workbench
+Triage a backlog
+Fix findings
+Propose security hardening
+Write vulnerability reports
+Export and track findings
+Changelog
+Codex Security CLI
+Quickstart
+Run bulk scans
+Run scans in CI
+GitLab CI/CD
+Reference
+FAQ
+TypeScript SDK
+Codex Security Cloud
+Setup
+Security Review
+Improving the threat model
+FAQ
+Cyber safety
+Models & Trusted Access
+Recommended configuration
+Overview
+Getting started
+Admin rollout guide
+Admin plugin
+Feature setup
+Dots
+Space
+Teams and Team Tasks
+ChatGPT in Slack and Teams
+Workspace connections
+Local computer access for Work Cloud and dots
+Sites
+Identity and access
+Authentication overview
+Groups and provisioning
+Dynamic groups
+User lifecycle management
+Roles and workspace permissions
+Personal access tokens
+Service accounts
+Deployment and configuration
+Windows app deployment
+Manage app updates
+Managed configuration
+Remote connections
+Workspace model availability
+Amazon Bedrock
+Bedrock GovCloud configuration
+Connect to a gateway
+Sign in with ChatGPT
+Use API/provider credentials
+Roll out a gateway
+Gateway compatibility
+Bedrock through LiteLLM
+ChatGPT Work
+Overview
+Cloud security
+Local security
+Usage and cost
+Admin FAQ
+Collaboration and sharing
+GPTs and sharing
+Plugins and connections
+Plugin controls
+Plugin management
+Skill controls
+Migrate custom GPTs to plugins
+Usage and analytics
+Workspace analytics
+Usage Insights
+Analytics API
+Security and compliance
+Governance
+Agent security
+Prisma AIRS
+HIPAA configuration
+Compliance API and audit events
+Explore use cases
+Collections
+Home
+Videos
+Showcase
+OpenAI Academy
+Online trainings
+Community
+Codex Ambassadors
+Codex for Students
+Codex for Open Source
+Events
+Blog
+Company blog
+Developer blog
+Explore use cases
+Collections
+Home
+Videos
+Showcase
+OpenAI Academy
+Online trainings
+Community
+Codex Ambassadors
+Codex for Students
+Codex for Open Source
+Events
+Blog
+Company blog
+Developer blog
+Showcase   Blog  Cookbook  Learn  Community
+DocsSelect...
+All posts
+Recent
+Bringing my LED display to life with GPT-Live-1 and Codex
+Rethinking skills and prompts for GPT-6 Astra
+Architectural visualization with Astra
+Building games with Astra
+Meet Rosalind Workbench: Empowering every scientist to be their own research team
+Topics
+General
+API
+Apps SDK
+Audio
+Codex
+Life sciences
+Home
+Topics
+Sign-in with ChatGPT
+Agents
+Evals
+Multimodal
+Text
+Guardrails
+Optimization
+ChatGPT
+Codex
+gpt-oss
+Contribute
+Cookbook on GitHub
+Home
+OpenAI Developers plugin
+Docs MCP
+Categories
+Demo apps
+Videos
+Topics
+Agents
+Audio & Voice
+Computer Use
+Codex
+Evals
+gpt-oss
+Fine-tuning
+Image generation
+Scaling
+Tools
+Video generation
+Community
+Programs
+Codex Ambassadors
+Meet the ambassadors
+Codex for Students
+Codex for Open Source
+OpenAI for Startups
+Spaces
+Events
+Developer Forum
+Discord
+Reddit
+X
+API Dashboard
+Try ChatGPT
+Home
+Quickstart
+Request a client ID
+Identity
+On your website
+In your ChatGPT plugin
+ChatGPT plan usage
+Overview
+UI/UX guidelines
+Registration and sign-in
+Accounts and sessions
+Models and inference
+Codex app-server
+Self-hosted VMs
+Token reference
+Errors and recovery
+Preview limitations
+Copy Page
+Registration and sign-in
+Register an open-source client, validate the ID token and permissions, and store the user’s basic account info and credentials.
+Copy Page
+Start first-time registration with client_id=dynamic_agent_client, include the host’s ext_agent_host_id, and set agent_name_hint to your app’s actual name, used consistently across installations. After the user names and authorizes the agent, the callback returns its issued client_id. Save it with the registration for that ChatGPT account and reuse it for later sign-ins to the same account. Send the same ext_agent_host_id for the same host. dynamic_agent_client is the first-time registration entrypoint, not the client ID to save or use for token exchange. This direct flow needs neither a client secret nor a partner API key.
+1. Choose a ChatGPT account and prepare the host
+When the user first opens your tool, show a Sign in with ChatGPT button labeled Continue with ChatGPT, following the UI/UX Guidelines for approved OpenAI branding. On later launches, let them choose a saved ChatGPT account or add another account or workspace. Keep a new sign-in attempt separate from the active account until its identity is validated.
+Choose and persist this host’s ext_agent_host_id before its first sign-in, or reuse its existing value for the same host. For initial dynamic registration, use your app’s actual name consistently as agent_name_hint. See A client vs. an agent host and Managing ChatGPT accounts for these choices.
+2. Start authorization
+Start your callback listener and generate a fresh random state, OIDC nonce, and PKCE verifier for each attempt. Keep those values and the exact callback URI until the callback completes.
+For a new ChatGPT account, send client_id=dynamic_agent_client. Include your app’s agent_name_hint as well as the host’s ext_agent_host_id.
+For a previously registered account, use its saved issued client_id instead of client_id=dynamic_agent_client. A retained id_token_hint identifies the original account; a saved email can also be sent as login_hint.
+Expected returning sign-in: For routine reauthorization with an issued dynamic-client ID, without id_token_hint the user sees the account selector screen, then redirects, with no workspace selection or consent screen. With id_token_hint, the flow skips account selection and redirects. The client stays bound to its registered workspace.
+Open the system browser at https://auth.openai.com/api/accounts/authorize and URL-encode each query parameter value. Send the following parameters in the authorization request:
+Parameter
+Value and purpose
+client_id
+dynamic_agent_client when the user registers their client for the first time. For future reauthorization through the regular OAuth flow, reuse the same issued client ID returned during registration.
+agent_name_hint
+Your app’s actual name, such as OpenClaw. Use it consistently across installations and include it only on initial dynamic-registration requests. Omit it from reauthorization with an issued client ID. The user can edit the name before approval; it is display metadata, not identity.
+ext_agent_host_id
+Required host identifier, distinct for each host.
+id_token_hint
+For reauthorization, the ID token retained from this account’s previous successful sign-in. The hint may be expired; it identifies the account, not a valid authenticated session. Omit it after signing out or if none was retained. Under the expected returning sign-in, it skips the unified session selector.
+login_hint
+For reauthorization, optional email hint, saved from this account’s validated ID token. For example, login_hint=user%40example.com. If you also send id_token_hint, keep both hints associated with the same selected ChatGPT account. Used to pre-select the user account as part of the OAuth flow.
+response_type
+code
+redirect_uri
+Use an HTTP loopback callback on 127.0.0.1 from initial registration onward, for example http://127.0.0.1:1455/auth/callback. Start the listener before opening the browser. Later sign-ins may use another available port, such as http://127.0.0.1:54321/auth/callback; only the port may vary. Keep the scheme, host, and path unchanged: /callback does not match /auth/callback. Within each authorization attempt, send the exact same URI, including its selected port, in the authorization request and code exchange. Do not substitute with localhost.
+scope
+Identity scopes: openid profile email. ChatGPT plan usage scopes: offline_access resource.invoke chatgpt.tokens.use.direct.
+resource
+https://api.openai.com/v1
+state
+A fresh random value bound to this authorization attempt; validate it on return.
+nonce
+A fresh random value for ID-token validation.
+code_challenge_method
+S256
+code_challenge
+The base64url-encoded SHA-256 digest of the PKCE verifier, without padding.
+For a new registration, the user signs in and reviews the requested permissions in the browser. Returning sign-in follows the expected flow above. The browser then returns to your loopback callback.
+3. Handle the callback and exchange the code
+If the callback contains error=access_denied, validate state, stop the attempt, and do not exchange a code. See ChatGPT plan use isn’t enabled for authorizing it later. The new-registration callback supplies the client ID used in the exchange. A successful new registration returns code, state, and the issued client_id. The callback may also include scope, as shown below. On reauthorization, the callback may omit client_id; retain the exact client ID already associated with the pending request. If the callback supplies a different client ID, reject the result rather than replacing the selected account’s registration. Use the token response’s granted scopes when deciding whether ChatGPT plan usage is enabled:
+YOUR_CALLBACK
+?code=<AUTHORIZATION_CODE>
+&scope=chatgpt.tokens.use.direct+email+offline_access+openid+profile+resource.invoke
+&state=<ORIGINAL_STATE>
+&client_id=<ISSUED_CLIENT_ID>
+Validate state against the pending authorization attempt and handle an OAuth error before using the result.
+For new registration, retain the issued client_id, such as oaiapp_.... Do not save dynamic_agent_client as the connection’s issued ID. If a new-registration callback does not include an issued ID, treat registration as incomplete.
+Exchange the code. POST a form-encoded authorization_code grant to https://auth.openai.com/api/accounts/oauth/token with the issued client_id, code, code_verifier, the same redirect_uri, and the same resource. No client secret is required.
+If code exchange returns invalid_grant, discard that code and start a fresh authorization with the issued client ID retained for this attempt. The token endpoint returns the credentials and granted scopes used in the next steps.
+4. Validate the ID token and ChatGPT plan permission
+Validate the ID token. Verify its signature against OpenAI’s published JWKS. Check the issuer, audience against the issued client ID, expiration, and the nonce saved for this attempt. Use its validated sub as the account identity. Email and sub are not workspace identifiers; retain the issued client ID with the verified identity to keep registrations separate. The signature-validation example in On your website also applies here; this OSS flow remains a public client without a secret.
+For a returning account, confirm the new ID token’s verified identity matches the selected account before replacing credentials. Check the token response’s granted scopes for chatgpt.tokens.use.direct before proceeding to inference. A valid ID token alone does not authorize ChatGPT plan usage.
+5. Store credentials in a local file
+Keep a separate protected credential record for each issued client ID and its verified account identity. Save the validated identity, tokens, granted scopes, and expiry information so the tool can resume and refresh after restart. Retain the ID token so your tool can provide id_token_hint on a later sign-in. Keep the stable host ID with the runtime it identifies. The example below shows one local credential record; paths and filenames are app-defined. The issued client ID comes from the new-registration callback. Build scopes from the returned, space-separated scope value.
+{
+"email": "user@example.com",
+"issuer": "https://auth.openai.com",
+"subject": "<VALIDATED_ID_TOKEN_SUBJECT>",
+"client_id": "<ISSUED_CLIENT_ID>",
+"ext_agent_host_id": "urn:uuid:...",
+"id_token": "<ID_TOKEN>",
+"access_token": "<ACCESS_TOKEN>",
+"refresh_token": "<REFRESH_TOKEN>",
+"token_type": "Bearer",
+"expires_in": 3600,
+"scopes": [
+"chatgpt.tokens.use.direct",
+"email",
+"offline_access",
+"openid",
+"profile",
+"resource.invoke"
+],
+"saved_at": "<UTC timestamp when your app receives this token response>"
+}
+Store credential files under an app-defined path such as ~/.config/YOUR_TOOL/. Write files atomically with owner-only permissions (0600 on Unix), and never commit or log them. Replace the access token, expiry, granted scopes, and rotating refresh token together after a successful refresh.
+Previous
+UI/UX guidelines
+Next
+Accounts and sessions
+Ask AI
+Docs agent
+Loading docs agent...

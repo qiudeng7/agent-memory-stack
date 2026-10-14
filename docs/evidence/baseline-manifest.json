@@ -1,0 +1,137 @@
+{
+  "files": [
+    {
+      "path": "apps/embedding/pyproject.toml",
+      "sha256": "09e4efc46ac130c48e3863599f34cfe1879eb17c72cdc2ee3562580b107430f1"
+    },
+    {
+      "path": "apps/embedding/requirements-dev.lock",
+      "sha256": "60819e5418c72e0702f8b0b3d7ca5c9c2c022f1a6efeb2a769f1b13bfbc97d64"
+    },
+    {
+      "path": "apps/embedding/requirements.lock",
+      "sha256": "5aae4e71b072e77409534802dba7546a297b18da4f78ef06fe9a5b3a03925fcc"
+    },
+    {
+      "path": "apps/embedding/src/ams_embedding/__init__.py",
+      "sha256": "d50ca300b62f6b670a262deaa14ec7bb5a48d46304c43c8c6eac53f9735b42d5"
+    },
+    {
+      "path": "apps/embedding/src/ams_embedding/app.py",
+      "sha256": "1a9bd07e651d4c4d8b3be57713aa06596fab1632d93889d33486f85c33fff524"
+    },
+    {
+      "path": "apps/embedding/src/ams_embedding/backend.py",
+      "sha256": "89f675e18f42c78bc64b419a38b186c769b191bd0891d9af8c14b2a8c6251b6e"
+    },
+    {
+      "path": "apps/embedding/src/ams_embedding/config.py",
+      "sha256": "82a7c578acdb4b44788f36e4a281696d693e863d06afd5ed23289515394d7d32"
+    },
+    {
+      "path": "apps/embedding/src/ams_embedding/service.py",
+      "sha256": "1f1edde6e0d33c171749f445c581f5fc0ee3cfd4704e24a5c19548e42089e1e8"
+    },
+    {
+      "path": "apps/llm-adapter/package.json",
+      "sha256": "3370bfdc61b7f4f79a554cc37a84a979563e3dedd74d2451457b44ad6edb8b30"
+    },
+    {
+      "path": "apps/llm-adapter/src/app.ts",
+      "sha256": "ef07392b1d625b7a7f643abf4879a02734a2149e2c0459482d3d93ec42fea5c2"
+    },
+    {
+      "path": "apps/llm-adapter/src/common.ts",
+      "sha256": "60f1170421280279cff29438265eab72c9e00a0e2cd6bf2871f7e92a79a75d65"
+    },
+    {
+      "path": "apps/llm-adapter/src/main.ts",
+      "sha256": "d18bbca2fc00042fc8438f048405cdab1ba1e75e76ad43475c4a310edd77cdbb"
+    },
+    {
+      "path": "apps/llm-adapter/src/oauth/errors.ts",
+      "sha256": "9f656721166da948ecdac35e91c5fa1ae5b983f7949d3ed0fc438acde6ab75b3"
+    },
+    {
+      "path": "apps/llm-adapter/src/oauth/file-store.ts",
+      "sha256": "a10d580ffb0400119b067a935470fa069057f55eedf8cdc3d900aaba7430bd8e"
+    },
+    {
+      "path": "apps/llm-adapter/src/oauth/index.ts",
+      "sha256": "0623553e00c02a43cbeda297f80a8f95d77b33f3f89f56b298aa57641758806c"
+    },
+    {
+      "path": "apps/llm-adapter/src/oauth/oauth-core.ts",
+      "sha256": "6433d20a5e6e5693c6205b85df5995e68d0469192643cd8699677bb50e291006"
+    },
+    {
+      "path": "apps/llm-adapter/src/oauth/security.ts",
+      "sha256": "d136bbd9110ce936acf4a50c682961a6e883790975605bec80449854f136cb50"
+    },
+    {
+      "path": "apps/llm-adapter/src/oauth/types.ts",
+      "sha256": "9d00dbb065b1e704dfd4028134a2c738cb747e13b1b51e13694396030ef1ee14"
+    },
+    {
+      "path": "apps/llm-adapter/src/protocol/index.ts",
+      "sha256": "cd09c4d56faabc29a641ec2da60573a380293648009356b5823f0b5d9b5012f0"
+    },
+    {
+      "path": "apps/llm-adapter/src/protocol/request.ts",
+      "sha256": "628ff64666164e1479454ca64db389a627092ce961378920d1cf8b058c845660"
+    },
+    {
+      "path": "apps/llm-adapter/src/protocol/response.ts",
+      "sha256": "04bc231bf2bf2c639fb5c4a80e0c2b64c6a03cf6608b9af57872ce7fd36e2861"
+    },
+    {
+      "path": "apps/llm-adapter/src/protocol/sse.ts",
+      "sha256": "e5dfaa9e774313b98fb593d4531f4dec1b3bfa5a40ee61c44059e6bf6e62d023"
+    },
+    {
+      "path": "apps/llm-adapter/src/protocol/validation.ts",
+      "sha256": "706419b7d9a7176a22b588beadee09fb3e67b73626180826eb5720d6dc9fcb67"
+    },
+    {
+      "path": "deploy/compose.cpu.yml",
+      "sha256": "df795632de1d60f90370d9801a493787b34bccdfa572bc87738e1bb2d92b3053"
+    },
+    {
+      "path": "deploy/compose.yml",
+      "sha256": "de97fe85c568cb1a7357544ff18f55d6dc37fead5e5d0825be43e35357dce652"
+    },
+    {
+      "path": "deploy/ov.conf",
+      "sha256": "0073ad279ed0c8995cdcd05858a2edfdf9b91724318687cb56dd93b86320cf41"
+    },
+    {
+      "path": "docs/architecture.md",
+      "sha256": "da0fc9e8a4014cc83603120f0704593b8c93978d5a972a2516cff6d9bb8be38a"
+    },
+    {
+      "path": "docs/deployment.md",
+      "sha256": "b06bfa5ef2d355a9ddc64d36e1fbf11bbe7a550e6bcac34531b7c55af9681b6a"
+    },
+    {
+      "path": "docs/implementation-plan.md",
+      "sha256": "714f406009514b91a27bcdedaa3056a559edf59dca206c50af43717a6cf815a4"
+    },
+    {
+      "path": "package.json",
+      "sha256": "5ef6bc7d7dac2f489f064b5d937658cef7bbdb095e35cf2578818a165119ad6f"
+    },
+    {
+      "path": "pnpm-lock.yaml",
+      "sha256": "f505b239c7f58c9f47467e1128d992c6433925bac494ea6e314e45e513ead2b6"
+    },
+    {
+      "path": "pnpm-workspace.yaml",
+      "sha256": "be8f0fbdf97624351361e8704a5b4734d0ac40cf29634294bd4b27cf6b6ff400"
+    }
+  ],
+  "node_tests": 108,
+  "python_tests": 104,
+  "test_containers_remaining": 0,
+  "live_oauth": false,
+  "formal_deployment": false
+}
