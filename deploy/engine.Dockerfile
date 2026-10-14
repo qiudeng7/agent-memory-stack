@@ -1,7 +1,7 @@
 # Build the fixed upstream revision in CI; no local native image or runtime tree.
 ARG PYTHON_IMAGE=python:3.11-slim-bookworm@sha256:a36c24f9cbdf4fd0f52d67f0823eeac19c2028c637cecc392d97f980d4fec56b
 FROM ${PYTHON_IMAGE} AS build
-RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates cmake ninja-build g++ libvulkan-dev glslc
+RUN apt-get update && apt-get install -y --no-install-recommends git ca-certificates cmake ninja-build g++ libvulkan-dev glslc spirv-headers libssl-dev
 ARG LLAMA_REVISION=d81235049384534c167caea52b85a694f6103d14
 RUN git init /src && git -C /src remote add origin https://github.com/ggml-org/llama.cpp.git \
     && git -C /src fetch --depth 1 origin "${LLAMA_REVISION}" \
