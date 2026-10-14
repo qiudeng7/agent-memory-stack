@@ -1,0 +1,22 @@
+{
+  "images": {
+    "llm": "ghcr.io/qiudeng7/agent-memory-stack-llm@sha256:77ced19144932acfdcc27900e6a8e3a7f03c89d732e97cb83a49fbd11662e640",
+    "embedding": "ghcr.io/qiudeng7/agent-memory-stack-embedding@sha256:4e18d185c5ae262fa1aa137c6ba0b79ce23fdd923b3e33ffe3778ab8d0c974c6",
+    "openviking": "ghcr.io/volcengine/openviking:v0.5.0@sha256:c60a83cd79cfce80db5266acb8bdd0908eee8abe8ff559a5f786aa504c251ccf"
+  },
+  "image_ids": {
+    "llm": "sha256:77ced19144932acfdcc27900e6a8e3a7f03c89d732e97cb83a49fbd11662e640",
+    "embedding": "sha256:4e18d185c5ae262fa1aa137c6ba0b79ce23fdd923b3e33ffe3778ab8d0c974c6",
+    "openviking": "sha256:c60a83cd79cfce80db5266acb8bdd0908eee8abe8ff559a5f786aa504c251ccf"
+  },
+  "network": "none",
+  "host_ports": false,
+  "synthetic_only": true,
+  "results": {
+    "llm": "health200 ready503 derived-admin200 master401; OAuth volume persists UID1000/0700",
+    "embedding": "real supervisor+gateway, loopback synthetic engine; ready200 derived-admin200 master401; two children; SIGTERM exit0",
+    "model_runtime": "embedded native loader/version exit0; synthetic cold download and warm reuse",
+    "openviking": "unchanged official image; Compose bootstrap readiness wait; SIGTERM exit0; volume root0700"
+  },
+  "cleanup": "all test containers, volumes and fixtures removed"
+}

@@ -2,7 +2,15 @@
 
 日期：2026-10-14。本记录描述已经执行的证据，不是部署授权或产品验收。
 
-## 独立部署包（当前入口）
+## 两个自有镜像、三个容器（当前入口）
+
+- 仅发布LLM Adapter、Embedding Service；OpenViking直接使用固定官方v0.5.0镜像。Embedding内置llama.cpp，私有引擎监听127.0.0.1:8081，Python网关监听8080；PID1管理两个子进程并联动退出。
+- [Actions 38538796663](https://github.com/qiudeng7/agent-memory-stack/actions/runs/38538796663)测试、两个镜像发布及部署包均成功，发布源commit为dc69399638339938c9c59bf8cc41a44f2fbe80c3。三个固定digest均已匿名拉取到本机，合并Embedding镜像的Vulkan设备探测识别RX570/RADV POLARIS10。
+- Node113、Python129、脚本46项测试通过；Actions/actionlint、独立冷读和定向代码复核通过。脚本含内联官方OV启动配置、两镜像打包、端口/loopback、双子进程退出/强杀及下载完整性验证。
+- [三容器镜像检查](<evidence/three-container-smoke.json>)使用network=none、合成主密钥和临时卷：真实Embedding supervisor和网关配合合成loopback后端验证ready、鉴权、两个子进程和SIGTERM；合并镜像内native CLI及小模型下载/复用通过；官方OV的Compose启动配置等待ready并正常退出。全部测试资源清理，未做真实模型推理或OAuth联机验收。
+- 本机~/deploy/agent-memory-stack已换成三容器配置及新digest，保留原主密钥字段和原卷名，不自动启动待配置服务。独立engine及派生OV不再构建/引用，远程历史package未删除。
+
+## 独立部署包（历史四容器方案）
 
 - 运行包仅包含compose.yml、.env.example、ov.conf及说明/镜像ID/校验清单；解压到独立tmp后Compose静态展开通过，无源码/build/入口脚本宿主依赖。
 - 四镜像已本地构建：两应用、带自动模型准备的引擎、仅增加薄入口的OpenViking派生镜像。固定上游GHCR镜像与模型HEAD采用直连验证，模型HEAD为200；未在本轮重复下载639MB模型。
