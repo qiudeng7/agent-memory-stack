@@ -121,7 +121,7 @@ Root 只用于引导 account，返回 user key 安全保存，harness/MCP/collec
 | Embedding | [配置profile](<../../apps/embedding/src/ams_embedding/config.py#L25-L54>)、[FrontDoor](<../../apps/embedding/src/ams_embedding/app.py#L25-L93>)、[service:120–214](<../../apps/embedding/src/ams_embedding/service.py#L120-L214>)分别落实固定identity/body/最终预算/批次/向量/缓存；[backend](<../../apps/embedding/src/ams_embedding/backend.py>)只对固定配置origin请求，禁止redirect、`trust_env=False`。 |
 | OV 防截配置 | [OV配置:4–18](<../../ov.conf#L4-L18>)确有1M阈值、1024维、query/document、none/temperature0；只能证明配置存在，不能独立证明OV端真实解析与整链路无损。 |
 | 四容器/CPU | 历史方案只有四服务，engine/memory profile和CPU override已随后移除；当前使用[根Compose](<../../compose.yml>)。本行保留初审背景，不视为新部署复核。 |
-| 启动门槛 | [OV薄wrapper:26–36](<../../deploy/openviking-entrypoint.py#L26-L36>)在exec上游前检查两adapter ready；health本身不会放行未授权LLM。 |
+| 启动门槛 | 历史OV薄wrapper在exec上游前检查两adapter ready；随后按用户要求移除派生镜像，当前[根Compose](<../../compose.yml>)直接使用官方镜像并保留就绪等待的内联启动配置。 |
 | 资产/镜像 | [准备工具](<../../scripts/prepare-embedding.py>)现校验项目内资产并同步公开构建元数据，不下载或读取认证；[模型manifest](<../evidence/qwen3-model-manifest.json>)的SHA与Pythonprofile匹配；[engine配方](<../../deploy/embedding-engine/Dockerfile>)是ELF闭包组装，文档未谎称全部源码可复现构建。 |
 | Docker隔离 | [Node Dockerfile](<../../apps/llm-adapter/Dockerfile>)部署生产依赖；[Python Dockerfile](<../../apps/embedding/Dockerfile>)用hash锁/wheel、单worker、默认10001；[Docker忽略规则](<../../.dockerignore>)和[Git忽略规则](<../../.gitignore>)排除私有配置、state和大资产。 |
 

@@ -2,7 +2,7 @@
 
 - 中文文档。NestJS LLM适配器用Node24/pnpm11/TypeScript严格ESM；Embedding服务用Python/FastAPI/httpx，保持各自生态。
 - 只设apps/llm-adapter与apps/embedding两个应用。OAuth/protocol/common是Nest应用内部模块，不为辅助函数过细拆包。Node跨包依赖若将来确有需求，必须声明workspace:*并以包名导入，禁止跨包src相对路径。
-- 本仓库管理自己的LLM/Embedding适配，不复制或修改OpenViking核心；允许基于固定官方镜像增加薄入口的派生镜像，上游按版本/digest锁定。
+- 只发布LLM Adapter和Embedding Service两个自有镜像。Embedding镜像包含Python网关与llama.cpp子进程；OpenViking直接使用固定官方镜像，不维护或发布派生镜像，不把底层推理引擎拆成独立部署服务。
 - 运行用户只需compose.yml、.env.example、ov.conf部署包；不依赖源码/build/setup/宿主UID。数据使用Docker named volumes，首次模型准备内置引擎镜像。不要重新引入profiles、多份CPU override或日常native runtime准备步骤。
 - 默认LLM provider disabled。测试只能使用合成fixtures、独立tmp及内存HTTP注入，不读取用户Codex/OAuth/key，也不发收费请求。真实OAuth/推理/正式部署需用户明确授权。
 - OAuth access/refresh token、auth code、state、nonce、PKCE verifier、提示词/记忆正文不得出现在日志、Git或测试快照中。

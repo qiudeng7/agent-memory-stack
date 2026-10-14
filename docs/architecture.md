@@ -17,7 +17,7 @@ OpenViking ──/v1/embeddings──> Python Embedding Service
                                  └─ llama.cpp engine ──Vulkan──> RX570
 ```
 
-自己维护的代码只有两个应用；最终部署通常是四个容器。不能因为有四个进程，就拆出四套业务仓库或十几个npm包。
+自己维护的代码只有两个应用，部署为三个容器：LLM Adapter、Embedding Service、官方 OpenViking。Python 网关和 llama.cpp 引擎是同一 Embedding 容器内的两个子进程，不拆成独立部署服务。
 
 ```text
 apps/llm-adapter/         # 唯一Node workspace应用
@@ -28,7 +28,7 @@ apps/llm-adapter/         # 唯一Node workspace应用
   test/
 apps/embedding/           # Python自己的pyproject、锁、测试、Dockerfile
   src/ams_embedding/
-deploy/                   # Compose、OV配置、引擎镜像组装配方
+deploy/                   # 两个自有镜像的本地构建配方
 scripts/                  # 开发检查与安全准备工具，不提供一套新平台
 ```
 
@@ -46,7 +46,7 @@ Node依赖声明在应用自己的package.json，根pnpm脚本通过`--filter @a
 | 网络token exchange、真实JWKS验证、浏览器登录、账户模型发现 | **未绑定；HTTP登录路由明确501** |
 | 生产LLM网络transport | **未绑定；provider默认disabled，ready/inference返回503** |
 | Python指令/token预算/缓存/后端HTTP/鉴权 | 已实现并使用ASGI与HTTP mock验证 |
-| 新Python网关对真实RX570/OV的闭环 | 待联调；不能用旧engine基准冒充新链路验收 |
+| 合并Embedding镜像及真实RX570/OV闭环 | 待运行验证；固定llama.cpp/Trixie Mesa的已有CI构建不是合并镜像验收 |
 | collector、memoryctl、完整reasoning bridge | 后续按实际需要实现，不部署空壳服务 |
 
 这里的OAuth核心并不是“JWT decode就相信登录”：它要求外部注入真正的验证器并提供签名/JWKS/算法/标准claims的验证结果，再检查issuer/audience/nonce/expiry/subject。当前没有该联机验证器，也不会读取日常Codex登录来补齐。
@@ -129,7 +129,9 @@ model的标称32K不决定本机服务预算：已有engine实测ctx2048只接�
 
 一个活动请求+有限等待，默认等待16。Python的body接收与后续排队/推理分别有预算，应用默认各120s；统一Compose为两阶段各300s，不是整个HTTP生命周期只限300s。GPU正常短查询快，真正容易拖慢读请求的是后台大batch：collector默认用小batch，不把32条×2000tokens塞成常态。CPU回退调整engine/client timeout、减少batch；后续如需读优先，在同一Python服务内增加调度，不先起第二套队列。
 
-`/ready`验证engine健康与预期alias，不证明真实GGUF内容、pooling或召回正确。实际权重hash/flags由准备工具和engine配方验证，最终还要GPU与OV联调。
+Embedding 容器的 Python 小型 PID 1 管理 FastAPI 网关（8080）与 llama.cpp 子进程（仅 `127.0.0.1:8081`）：转发停止信号、回收子进程，任一子进程失败就终止另一个并退出，由容器重启策略恢复。模型下载、校验和设备访问由该镜像负责；首次下载与子进程启动最长等待 30 分钟。
+
+`/health`只表示进程健康，不代表推理就绪；`/ready`验证engine健康与预期alias。下载进度和启动故障查看 `docker compose logs -f embedding`。模型内容由镜像内准备逻辑核验长度与SHA，pooling与召回正确性仍需实际GPU和OV联调。
 
 ### 怎样避免OV上游先截断
 
@@ -139,26 +141,33 @@ OV原生`max_input_tokens`是估计截头，不是精确分段。配置将其提
 
 ## 5. 部署与数据边界
 
-四个进程的默认边界：
+三个容器的默认边界：
 
 | 容器 | 访问权 | 持久化 |
 |---|---|---|
-| Nest LLM Adapter | 自己的OAuth目录；数据/admin服务key；外部Auth/Responses HTTPS | host ID/profile；将来按需bridge |
-| Python Embedding | 网关data/admin key与独立engine key；engine HTTP | 无原文/向量缓存持久化 |
-| llama.cpp engine | renderD128、可写模型卷（首次下载后校验复用）、engine key | 模型持久卷、可丢弃shader缓存 |
-| OpenViking | 自己完整workspace、自己的Root key、网关data keys；无OAuthtoken | 文件、向量、task、queue、identity等完整state |
+| Nest LLM Adapter | 自己的OAuth目录；数据/admin服务key；外部Auth/Responses HTTPS | oauth卷：host ID/profile；将来按需bridge |
+| Python Embedding + llama.cpp | 网关data/admin key、内部engine key；render设备；可写模型卷 | models卷：GGUF、下载锁；shader缓存可丢弃，原文/向量缓存不持久化 |
+| 官方 OpenViking | 自己完整workspace、自己的Root key、网关data keys；无OAuth token | openviking卷：文件、向量、task、queue、identity等完整state |
 
-同一专用bridge，只有LLM管理/OAuth loopback1455与OV loopback1933发布到宿主；Embedding/engine不公开端口。普通harness通过MCP/user key访问OV，不拿Root或Gateway admin key。
+同一专用bridge，只有LLM管理/OAuth loopback1455与OV loopback1933发布到宿主；Embedding不公开端口，llama.cpp仅监听同容器loopback8081。普通harness通过MCP/user key访问OV，不拿Root或Gateway admin key。
 
-部署包与源码分离：三份运行配置加说明、镜像清单与校验值；四镜像由 Actions 测试、构建并发布到 GHCR，部署模板按 digest 固定引用，无源码 mount/build 依赖。引擎从固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 编译并使用 Debian trixie Mesa 包，不依赖旧本地 native image/runtime；旧性能记录不作为新镜像验收。使用Docker named volumes保存模型、OAuth和OV状态，镜像预设目录属主/权限，不要求填写宿主UID。引擎入口以HTTPS下载固定模型并校验size/SHA后原子发布；已有模型每次核验，失败不覆盖旧文件。OV入口内置派生镜像，等待adapter ready后exec官方入口。
+部署包与源码分离：三份运行配置加说明、镜像清单与校验值，无源码mount/build依赖。Actions只构建发布LLM和Embedding两个自有GHCR镜像；OpenViking直接引用官方`v0.5.0`，固定为：
+
+```text
+ghcr.io/volcengine/openviking:v0.5.0@sha256:c60a83cd79cfce80db5266acb8bdd0908eee8abe8ff559a5f786aa504c251ccf
+```
+
+部署包的 `images.json` 记录两个自有镜像digest与官方OV digest。Embedding内从固定llama.cpp commit `d81235049384534c167caea52b85a694f6103d14`编译引擎，使用Debian trixie Mesa包，不依赖旧本地native image/runtime。固定引擎构建已有CI基线，合并镜像的运行、GPU及性能验证单独记录。
+
+三个named volumes仍为models、oauth、openviking；models现挂载到Embedding。镜像预设目录属主/权限，不要求填写宿主UID。Embedding保留root以访问既有模型卷和映射设备，同时`cap_drop: [ALL]`、`no-new-privileges`，不增加特权。镜像内准备逻辑以HTTPS下载固定模型，校验size/SHA后原子发布；已有模型每次核验，失败不覆盖旧文件。
 
 .env只配置一个256bit随机主密钥（64hex字符）。Node/Python/入口按HMAC-SHA256(master原样UTF8, `agent-memory-stack/v1/<role>`)派生六角色key，输出64hex；roles为llm-data、llm-admin、embedding-data、embedding-admin、embedding-engine、openviking-root。主密钥大小写不归一化、不hex解码。无master时应用保留显式key/file开发兼容，混用明确报错。修改.env后compose up -d重建受影响容器。
 
-这项简化将四容器置于同信任域：每个容器及Docker管理员可读取master并派生其它角色；表中的访问权描述正常调用/挂载，不宣称密钥泄漏后的跨容器隔离。API仍区分角色，普通agent只拿OV user key。主密钥不当Bearer key、不写日志/镜像层；OAuth token仍仅存独立卷，不由master派生。多租户或强容器隔离须另用独立secret供应机制，不把主密钥方案冒充它。
+这项简化将三个容器置于同信任域：每个容器及Docker管理员可读取master并派生其它角色；表中的访问权描述正常调用/挂载，不宣称密钥泄漏后的跨容器隔离。API仍区分角色，普通agent只拿OV user key。主密钥不当Bearer key、不写日志/镜像层；OAuth token仍仅存独立卷，不由master派生。多租户或强容器隔离须另用独立secret供应机制，不把主密钥方案冒充它。
 
-OpenViking仅有配置、Compose与等待adapter就绪的薄wrapper；不复制/修改其核心。使用`--without-bot`保留HTTP/MCP/Studio，不存在`--memory-only`参数。原生Studio可先用；启动配置只读时不能在Studio直接保存该文件，runtime/account overrides另走明确管理权限。
+OpenViking的启动配置由Compose内联Python脚本处理：从环境中的主密钥仅派生llm-data、embedding-data、openviking-root三个key，注入运行配置；先等待两个adapter的`/ready`，再exec官方entrypoint并传入`--without-bot`。这是启动配置，不是自有OV镜像或核心修改，也不挂载宿主脚本。Compose对Embedding仅依赖health，不把推理ready当容器启动条件；入口的ready门禁防止未就绪时写入失败。原生HTTP/MCP/Studio在门禁通过后启动；只读启动配置的保存与runtime/account overrides须区分。
 
-有充足RAM，优先常驻模型与索引、留大缓存。没有必要把CPU engine卡在2GiB：旧实测长输入曾OOM，统一Compose给CPU/GPU engine均8GiB上限留余量，4GiB显存仍独立约束。容器limit不是预留，不让“上限相加”伪装成实际占用；OV的规模内存按向量/原文与现有主机负载调整。
+有充足RAM，优先常驻模型与索引、留大缓存。统一Compose给合并Embedding容器8GiB上限，覆盖网关与CPU/GPU引擎，4GiB显存仍独立约束。容器limit不是预留；OV的规模内存按向量/原文与现有主机负载调整。
 
 ## 6. 原始history与后续collector
 
@@ -172,7 +181,7 @@ session ID包含harness/installation/session，事件ID来自原offset/hash；�
 
 ## 7. 维护约束
 
-- 升级OV时先更新固定源码/镜像digest与具体API fixture，不追浮动main；认证、任务、embedding截断契约必须再验。
+- 升级OV时先更新官方版本/镜像digest与具体API fixture，不追浮动main；认证、任务、embedding截断契约必须再验。
 - 更新Node/Python依赖走各自锁文件。Nest12.1.3遗漏rxjs peer已用pnpm packageExtensions显式修复，不依赖root hoist碰巧可用。
 - 换Embedding模型用新profile、namespace/workspace和全量重嵌；同权重CPU/GPU只是backend回退，不为此重建。
 - 冷备份先停采集、drain任务与refresh、停OV/adapter，再备份完整state+配置+独立keys。旧refresh-token备份可能因rotation失效，恢复后需要重新登录，不能承诺凭据备份永久可用。

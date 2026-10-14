@@ -225,6 +225,12 @@ def engine_command_and_env(model_path, source_env):
     if not re.fullmatch(r"[0-9]{1,3}", layers):
         raise PreparationError("EMBEDDING_GPU_LAYERS must be an integer from 0 to 999")
     layers = int(layers)
+    port = source_env.get("ENGINE_PORT", "8080")
+    if not re.fullmatch(r"[0-9]{4,5}", port) or not 1024 <= int(port) <= 65535:
+        raise PreparationError("ENGINE_PORT must be an integer from 1024 to 65535")
+    bind = source_env.get("ENGINE_BIND", "0.0.0.0")
+    if bind not in ("127.0.0.1", "localhost", "0.0.0.0"):
+        raise PreparationError("ENGINE_BIND must be a local bind address")
     # Strict allowlist: no master key, service credentials, proxy/auth env, or
     # LLAMA_* overrides reach the engine. Runtime discovery variables are local.
     env = {name: source_env[name] for name in (
@@ -236,7 +242,7 @@ def engine_command_and_env(model_path, source_env):
     ))
     command = ["/opt/runtime/ld-linux-x86-64.so.2", "--library-path", "/opt/runtime", "/opt/runtime/llama-server",
                "-m", model_path, "--alias", "qwen3-embedding-0.6b-q8", "--embedding", "--pooling", "last",
-               "--embd-normalize", "2", "--host", "0.0.0.0", "--port", "8080", "-c", "2048", "-b", "2048",
+               "--embd-normalize", "2", "--host", bind, "--port", str(int(port)), "-c", "2048", "-b", "2048",
                "-ub", "2048", "-np", "1", "-t", "4", "-tb", "4", "--flash-attn", "off", "--fit", "off",
                "--device", "none" if layers == 0 else "Vulkan0", "-ngl", str(layers), "--no-op-offload"]
     return command, env

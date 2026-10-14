@@ -239,6 +239,33 @@ class EngineTests(unittest.TestCase):
             with self.subTest(bad=bad), self.assertRaises(engine.PreparationError):
                 engine.engine_command_and_env("/models/model", {"AMS_MASTER_KEY": MASTER, "EMBEDDING_GPU_LAYERS": bad})
 
+    def test_bind_port_defaults_and_overrides(self):
+        for settings, bind, port in [({}, "0.0.0.0", "8080"),
+                                     ({"ENGINE_BIND": "127.0.0.1", "ENGINE_PORT": "8081"}, "127.0.0.1", "8081"),
+                                     ({"ENGINE_BIND": "localhost", "ENGINE_PORT": "1024"}, "localhost", "1024"),
+                                     ({"ENGINE_PORT": "65535"}, "0.0.0.0", "65535")]:
+            with self.subTest(settings=settings):
+                source = {"AMS_MASTER_KEY": MASTER, **settings}
+                command, env = engine.engine_command_and_env("/models/fixture.gguf", source)
+                self.assertEqual(command[command.index("--host") + 1], bind)
+                self.assertEqual(command[command.index("--port") + 1], port)
+                self.assertNotIn("ENGINE_BIND", env)
+                self.assertNotIn("ENGINE_PORT", env)
+                self.assertNotIn("AMS_MASTER_KEY", env)
+
+    def test_bad_bind_port_rejected_before_download(self):
+        invalid = [{"ENGINE_PORT": value} for value in
+                   ["", "0", "80", "1023", "65536", "-8080", "8081\n", " 8081", "1e4", "http://secret.example"]]
+        invalid += [{"ENGINE_BIND": value} for value in
+                    ["", "::1", "192.168.1.1", "example.com", "127.0.0.1\n", "http://secret.example"]]
+        for settings in invalid:
+            with self.subTest(settings=settings), mock.patch.dict(os.environ, {"AMS_MASTER_KEY": MASTER, **settings}, clear=True), mock.patch.object(engine, "prepare_model") as prepare, mock.patch.object(engine.os, "execve") as execute, mock.patch.object(engine.signal, "signal"), contextlib.redirect_stderr(io.StringIO()) as log:
+                self.assertEqual(engine.main(), 1)
+                prepare.assert_not_called()
+                execute.assert_not_called()
+                self.assertNotIn("secret", log.getvalue())
+                self.assertNotIn(MASTER, log.getvalue())
+
     def test_main_error_redaction_and_no_python_ld_mutation(self):
         stderr = io.StringIO()
         before = os.environ.get("LD_LIBRARY_PATH")

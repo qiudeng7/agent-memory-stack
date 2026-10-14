@@ -29,11 +29,19 @@ docker compose ps
 docker compose logs -f
 ```
 
-部署包只有三份配置（`compose.yml`、`.env.example`、`ov.conf`），另带 README、`images.json` 和 `SHA256SUMS`。四个镜像引用已经固定为 GHCR digest，不需填写镜像标签或执行 `docker load`。主密钥是用户必须填写的值。
+部署包包含 [Compose 配置](<https://github.com/qiudeng7/agent-memory-stack/blob/main/compose.yml>)、[环境模板](<https://github.com/qiudeng7/agent-memory-stack/blob/main/.env.example>)、[OpenViking 配置](<https://github.com/qiudeng7/agent-memory-stack/blob/main/ov.conf>)，另带部署说明、镜像清单 `images.json` 和校验清单 `SHA256SUMS`。三个容器分别使用自有 LLM、Embedding 镜像和官方 OpenViking 镜像，引用均固定 digest，不需填写镜像标签或执行 `docker load`。主密钥是用户必须填写的值。
 
-首次启动从 Hugging Face 下载固定 revision 的约 639MB 模型，校验长度和 SHA256 后启用；以后复用模型卷并在启动时核验。需能访问 Hugging Face 及其 HTTPS 下载域名。下载最长 30 分钟，期间 engine 为 starting；失败时查看 `docker compose logs embedding-engine`，不会启用损坏模型。
+Embedding 镜像负责设备访问和模型准备：首次启动从 Hugging Face 下载固定 revision 的约 639MB 模型，校验长度和 SHA256 后启用，以后复用模型卷并在启动时核验。需能访问 Hugging Face 及其 HTTPS 下载域名。单次下载期限为 30 分钟；Python 网关可以先变为 `healthy`，而模型尚未就绪。进度与故障查看 `docker compose logs -f embedding`，失败不会启用损坏模型。
 
-**当前 LLM provider 仍为 disabled。** `http://127.0.0.1:1455/health` 返回 200，`/ready` 返回 503；真实 OAuth 登录和推理未接通。OpenViking 等待两个 adapter ready，期间 1933 没有应用响应、健康检查为 unhealthy。镜像可下载或容器启动不代表记忆闭环已验收；旧本机原生引擎的性能也不是新 Mesa 镜像的验收结果。
+`/health` 仅表示进程健康，不表示推理就绪；在部署目录检查 Embedding `/ready`：
+
+```sh
+docker compose exec embedding python -c "import http.client; c=http.client.HTTPConnection('127.0.0.1',8080,timeout=5); c.request('GET','/ready'); print(c.getresponse().status)"
+```
+
+200 表示后端就绪，503 表示仍未就绪；结合 Embedding 日志排查。Compose 在 Embedding health 通过后启动 OpenViking 容器，其入口再等待两个适配服务 `/ready`，然后运行官方入口。
+
+当前 LLM provider 为 `disabled`（LLM `/health` 返回 200、`/ready` 返回 503），因此 OpenViking 会继续等待，1933 暂无应用响应。
 
 ## 日常操作与升级
 
@@ -49,17 +57,17 @@ docker compose down
 
 **正常停止使用 `down`，不要加 `-v`：`down -v` 会删除持久数据卷。** 修改环境后使用 `up -d`，而不是 `restart`，使 Compose 重建受影响容器。缓存默认 256MiB，可设置 `EMBEDDING_CACHE_MIB`。
 
-镜像按 digest 固定，单独 `pull` 不会自动升级。升级时先备份，将新版部署包解压到独立临时目录并校验，比较配置后更新部署目录中的配置和四个镜像引用；保留现有主密钥及需要的设备设置，不直接覆盖私有配置。再执行 `pull` 和 `up -d`。保留旧配置用于回退；若上游改变数据格式，先在备份副本验证兼容性。
+镜像按 digest 固定，单独 `pull` 不会自动升级。升级时先备份，将新版部署包解压到独立临时目录并校验，比较配置后更新部署目录中的配置和三个镜像引用；保留现有主密钥及需要的设备设置，不直接覆盖私有配置。再执行 `pull` 和 `up -d`。从旧四容器版本升级时使用 `docker compose up -d --remove-orphans`，清除本项目已退役的独立引擎容器，避免它继续占用GPU。保留旧配置用于回退；若上游改变数据格式，先在备份副本验证兼容性。
 
-仅 localhost 的 1455（LLM）和 1933（OpenViking）开放；Embedding 及 engine 无宿主端口。OpenViking 就绪后才提供 `/studio/` 和 `/mcp`。
+仅 localhost 的 1455（LLM）和 1933（OpenViking）开放；Embedding 无宿主端口，内置 llama.cpp 仅监听容器内 `127.0.0.1:8081`。OpenViking 就绪后才提供 `/studio/` 和 `/mcp`。
 
 ## 密钥、数据与备份
 
-一个随机主密钥按用途派生内部服务的 data/admin、engine 和 OpenViking Root key；主密钥本身不是 Bearer key。**这是单用户、同信任域部署**：四个容器和 Docker 管理员都能取得主密钥，不能把用途派生当作跨容器隔离。普通 agent/MCP 使用 OpenViking user key，不使用主密钥。不要公开私有配置或带凭据的完整 `docker compose config` / `inspect` 输出。轮换主密钥须协调重建全部服务并更新使用旧派生 key 的客户端。
+一个随机主密钥按用途派生内部服务的 data/admin、engine 和 OpenViking Root key；主密钥本身不是 Bearer key。**这是单用户、同信任域部署**：三个容器和 Docker 管理员都能取得主密钥，不能把用途派生当作跨容器隔离。普通 agent/MCP 使用 OpenViking user key，不使用主密钥。不要公开私有配置或带凭据的完整 `docker compose config` / `inspect` 输出。轮换主密钥须协调重建全部服务并更新使用旧派生 key 的客户端。
 
 | 默认 named volume | 内容 |
 |---|---|
-| `agent-memory-stack_models` | GGUF 模型及下载锁 |
+| `agent-memory-stack_models` | 挂载到 Embedding 的 GGUF 模型及下载锁 |
 | `agent-memory-stack_oauth` | LLM OAuth 持久目录（联机接入后使用） |
 | `agent-memory-stack_openviking` | OpenViking 完整持久数据 |
 
@@ -71,17 +79,21 @@ Docker 和镜像负责目录权限，不需宿主 UID/GID 或手工建数据目�
 
 ## 维护者发布流程
 
-源码仓库为 [qiudeng7/agent-memory-stack](<https://github.com/qiudeng7/agent-memory-stack>)。发布 workflow 在 push 到 `main`、推送 `v*` 标签或手动 `workflow_dispatch` 时执行测试，然后矩阵构建并推送四个 Linux amd64 镜像：
+源码仓库为 [qiudeng7/agent-memory-stack](<https://github.com/qiudeng7/agent-memory-stack>)。[发布 workflow](<https://github.com/qiudeng7/agent-memory-stack/blob/main/.github/workflows/publish.yml>)在 push 到 `main`、推送 `v*` 标签或手动 `workflow_dispatch` 时执行测试，然后仅以 `llm`、`embedding` 两项矩阵构建并推送 Linux amd64 镜像：
 
 - `ghcr.io/qiudeng7/agent-memory-stack-llm`
 - `ghcr.io/qiudeng7/agent-memory-stack-embedding`
-- `ghcr.io/qiudeng7/agent-memory-stack-engine`
-- `ghcr.io/qiudeng7/agent-memory-stack-openviking`
 
-每个镜像带 `sha-<完整 commit>` 及对应 branch/tag 标签。工作流收集四个 digest，生成固定引用的部署模板作为 Actions artifact；`v*` 标签额外上传为 Release asset。终端用户下载部署包即可，不需要了解构建矩阵。
+OpenViking 直接使用官方固定引用，不构建或发布自有 OpenViking 镜像：
 
-**首次发布后验证四个镜像能否匿名拉取，不以push成功推断可见性。** 已公开的镜像无需填写GitHub Token。若新package匿名拉取被拒绝，owner在GitHub个人Packages页面进入package settings，将visibility改为Public后再验证；工作流不调用不存在的REST visibility更新接口。
+```text
+ghcr.io/volcengine/openviking:v0.5.0@sha256:c60a83cd79cfce80db5266acb8bdd0908eee8abe8ff559a5f786aa504c251ccf
+```
 
-引擎由 CI 编译固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 并使用 Debian trixie Mesa 包，不依赖本机旧镜像或 runtime。新镜像仍需单独验证 GPU 可用性及实际性能。
+两个自有镜像带 `sha-<完整 commit>` 及对应 branch/tag 标签。工作流收集 `image-llm`、`image-embedding` artifacts，将两个自有 GHCR digest 与官方 OpenViking digest 写入部署包的 `images.json`，并生成固定引用的配置；`v*` 标签额外上传为 Release asset。底层引擎包含在 Embedding 镜像中，不单独发布。
+
+**首次发布后验证两个自有镜像及官方引用能否匿名拉取，不以 push 成功推断可见性。** 已公开的镜像无需填写 GitHub Token。若新 package 匿名拉取被拒绝，owner 在 GitHub 个人 Packages 页面进入 package settings，将 visibility 改为 Public 后再验证；工作流不调用不存在的 REST visibility 更新接口。
+
+Embedding 内编译固定 llama.cpp commit `d81235049384534c167caea52b85a694f6103d14` 并使用 Debian trixie Mesa 包，不依赖本机旧镜像或 runtime。该引擎构建已有 CI 基线；合并后的 Embedding 镜像仍需单独验证进程生命周期、GPU 可用性及实际性能。
 
 公开仓库与镜像发布已获授权；源码许可证尚未选择，保持 `UNLICENSED`。公开访问不等于授予源码开源许可证；分发 OpenViking、llama.cpp、Mesa 等组件时仍须履行其许可证和对应源码等义务。

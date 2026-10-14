@@ -27,29 +27,13 @@ services:
   embedding:
     <<: *common
     image: "${EMBEDDING_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-embedding:main}"
-    environment:
-      AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
-      EMBEDDING_ENGINE_URL: http://embedding-engine:8080
-      EMBEDDING_CACHE_MIB: "${EMBEDDING_CACHE_MIB:-256}"
-      EMBEDDING_ENGINE_TIMEOUT_SECONDS: "180"
-      EMBEDDING_TIMEOUT_SECONDS: "300"
-    read_only: true
-    tmpfs: ["/tmp:rw,noexec,nosuid,size=64m"]
-    stop_grace_period: 30s
-    healthcheck:
-      test: [CMD, python, -c, "import urllib.request; urllib.request.urlopen('http://127.0.0.1:8080/health',timeout=3)"]
-      interval: 30s
-      timeout: 5s
-      retries: 3
-
-  embedding-engine:
-    <<: *common
-    image: "${ENGINE_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-engine:main}"
-    # Root owns the model volume and the mapped render node; no host UID/GID setup.
     devices: ["${RENDER_DEVICE:-/dev/dri/renderD128}:/dev/dri/renderD128"]
     environment:
       AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
       EMBEDDING_GPU_LAYERS: "${EMBEDDING_GPU_LAYERS:-999}"
+      EMBEDDING_CACHE_MIB: "${EMBEDDING_CACHE_MIB:-256}"
+      EMBEDDING_ENGINE_TIMEOUT_SECONDS: "180"
+      EMBEDDING_TIMEOUT_SECONDS: "300"
     volumes: [models:/models]
     read_only: true
     tmpfs:
@@ -62,11 +46,35 @@ services:
       interval: 30s
       timeout: 5s
       retries: 3
-      start_period: 30m
 
   openviking:
     <<: *common
-    image: "${OPENVIKING_IMAGE:-ghcr.io/qiudeng7/agent-memory-stack-openviking:main}"
+    image: ghcr.io/volcengine/openviking:v0.5.0@sha256:c60a83cd79cfce80db5266acb8bdd0908eee8abe8ff559a5f786aa504c251ccf
+    # Official image, unchanged. Only bootstrap configuration is provided here.
+    entrypoint: [python, -u, -c]
+    command:
+      - |
+        import hashlib, hmac, os, re, signal, sys, time, urllib.request
+        master = os.environ.pop('AMS_MASTER_KEY', '')
+        if not re.fullmatch(r'[a-fA-F0-9]{64}', master):
+            raise SystemExit('AMS_MASTER_KEY must be 64 random hex characters')
+        for name, role in [('OV_ROOT_API_KEY', 'openviking-root'), ('LLM_API_KEY', 'llm-data'), ('EMBEDDING_API_KEY', 'embedding-data')]:
+            os.environ[name] = hmac.new(master.encode(), ('agent-memory-stack/v1/' + role).encode(), hashlib.sha256).hexdigest()
+        del master
+        os.chmod('/app/.openviking', 0o700)
+        signal.signal(signal.SIGTERM, lambda *_: sys.exit(0))
+        client = urllib.request.build_opener(urllib.request.ProxyHandler({}))
+        def ready():
+            for url in ('http://llm-adapter:4010/ready', 'http://embedding:8080/ready'):
+                try:
+                    with client.open(url, timeout=5) as response:
+                        if response.status != 200: return False
+                except OSError:
+                    return False
+            return True
+        print('Waiting for LLM and embedding readiness.', flush=True)
+        while not ready(): time.sleep(5)
+        os.execvp('openviking-entrypoint', ['openviking-entrypoint', '--without-bot'])
     environment:
       AMS_MASTER_KEY: "${AMS_MASTER_KEY:?Set a random 64-hex master key in .env}"
       OPENVIKING_SERVER_HOST: 0.0.0.0
@@ -79,7 +87,6 @@ services:
     depends_on:
       llm-adapter: {condition: service_healthy}
       embedding: {condition: service_healthy}
-      embedding-engine: {condition: service_healthy}
     stop_grace_period: 2m
     healthcheck:
       test: [CMD, curl, -fsS, http://127.0.0.1:1933/ready]

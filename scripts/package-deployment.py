@@ -8,17 +8,14 @@ from pathlib import Path
 import re
 import tarfile
 
-IMAGES = {
-    'LLM_IMAGE': 'agent-memory-stack-llm:0.1.0',
-    'EMBEDDING_IMAGE': 'agent-memory-stack-embedding:0.1.0',
-    'ENGINE_IMAGE': 'agent-memory-stack-engine:0.1.0',
-    'OPENVIKING_IMAGE': 'agent-memory-stack-openviking:0.1.0',
-}
+OFFICIAL_OPENVIKING = 'ghcr.io/volcengine/openviking:v0.5.0@sha256:c60a83cd79cfce80db5266acb8bdd0908eee8abe8ff559a5f786aa504c251ccf'
+PUBLISHED = {'LLM_IMAGE': 'llm', 'EMBEDDING_IMAGE': 'embedding'}
+IMAGES = {**PUBLISHED, 'OPENVIKING_IMAGE': OFFICIAL_OPENVIKING}
 
 
 def create_bundle(root, output, images):
-    if set(images) != set(IMAGES) or not all(re.fullmatch(r'(?:ghcr\.io/[a-z0-9._/-]+@)?sha256:[0-9a-f]{64}', value) for value in images.values()):
-        raise ValueError('Expected four immutable image references')
+    if set(images) != set(IMAGES) or images.get('OPENVIKING_IMAGE') != OFFICIAL_OPENVIKING or not all(re.fullmatch(r'(?:ghcr\.io/[a-z0-9._/-]+@)?sha256:[0-9a-f]{64}', images[name]) for name in PUBLISHED):
+        raise ValueError('Expected two immutable adapter images and fixed official OpenViking')
     output = Path(output).absolute()
     if output.resolve(strict=False) != output or output.is_symlink():
         raise ValueError('Unsafe bundle destination')
@@ -29,7 +26,7 @@ def create_bundle(root, output, images):
         if source.is_symlink() or not source.is_file():
             raise ValueError('Invalid deployment input')
         contents[name] = source.read_bytes()
-    contents['.env.example'] += ('\n# Immutable image references recorded by the publishing workflow.\n' + '\n'.join(f'{name}={value}' for name, value in images.items()) + '\n').encode()
+    contents['.env.example'] += ('\n# Immutable image references recorded by the publishing workflow.\n' + '\n'.join(f'{name}={images[name]}' for name in PUBLISHED) + '\n').encode()
     contents['images.json'] = (json.dumps({'platform': 'linux/amd64', 'images': images}, indent=2) + '\n').encode()
     contents['SHA256SUMS'] = ''.join(f'{hashlib.sha256(data).hexdigest()}  {name}\n' for name, data in sorted(contents.items())).encode()
     output.parent.mkdir(parents=True, exist_ok=True)
@@ -47,8 +44,8 @@ def main():
     parser.add_argument('--output-dir', type=Path, default=Path(__file__).resolve().parent.parent / 'dist')
     args = parser.parse_args()
     root = Path(__file__).resolve().parent.parent
-    images = {}
-    for component, name in [('llm', 'LLM_IMAGE'), ('embedding', 'EMBEDDING_IMAGE'), ('engine', 'ENGINE_IMAGE'), ('openviking', 'OPENVIKING_IMAGE')]:
+    images = {'OPENVIKING_IMAGE': OFFICIAL_OPENVIKING}
+    for name, component in PUBLISHED.items():
         reference = json.loads((args.references / ('image-' + component) / 'image-reference.json').read_text())
         if set(reference) != {component} or not reference[component].startswith('ghcr.io/'):
             raise ValueError('Invalid publishing reference')

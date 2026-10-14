@@ -20,7 +20,8 @@ class BundleTests(unittest.TestCase):
     def setUp(self):
         self.root = Path(tempfile.mkdtemp(prefix='ams-package-')).resolve()
         self.identity = self.root.stat()
-        self.ids = {name: 'sha256:' + str(i) * 64 for i, name in enumerate(package.IMAGES, 1)}
+        self.ids = {name: 'sha256:' + str(i) * 64 for i, name in enumerate(package.PUBLISHED, 1)}
+        self.ids['OPENVIKING_IMAGE'] = package.OFFICIAL_OPENVIKING
 
     def tearDown(self):
         current = self.root.lstat()
@@ -41,7 +42,8 @@ class BundleTests(unittest.TestCase):
             self.assertEqual(hashlib.sha256(contents[name]).hexdigest(), digest)
         self.assertEqual(json.loads(contents['images.json'])['images'], self.ids)
         self.assertIn(b'AMS_MASTER_KEY=REPLACE_WITH_64_HEX_CHARACTERS', contents['.env.example'])
-        for key, value in self.ids.items():
+        for key in package.PUBLISHED:
+            value = self.ids[key]
             self.assertIn((key + '=' + value).encode(), contents['.env.example'])
         # Extract only prevalidated regular names into our own isolated directory.
         for name, data in contents.items():
@@ -59,12 +61,15 @@ class BundleTests(unittest.TestCase):
                         self.assertTrue(Path(volume['source']).exists())
 
     def test_published_ghcr_digests_are_preserved(self):
-        references = {name: 'ghcr.io/qiudeng7/agent-memory-stack-' + component + '@sha256:' + 'a' * 64 for name, component in [('LLM_IMAGE', 'llm'), ('EMBEDDING_IMAGE', 'embedding'), ('ENGINE_IMAGE', 'engine'), ('OPENVIKING_IMAGE', 'openviking')]}
+        references = {name: 'ghcr.io/qiudeng7/agent-memory-stack-' + component + '@sha256:' + 'a' * 64 for name, component in package.PUBLISHED.items()}
+        references['OPENVIKING_IMAGE'] = package.OFFICIAL_OPENVIKING
         path = package.create_bundle(ROOT, self.root / 'ghcr.tar.gz', references)
         with tarfile.open(path) as archive:
             template = archive.extractfile('.env.example').read().decode()
-            for name, reference in references.items():
-                self.assertIn(name + '=' + reference, template)
+            for name in package.PUBLISHED:
+                self.assertIn(name + '=' + references[name], template)
+            self.assertNotIn('OPENVIKING_IMAGE=', template)
+            self.assertNotIn('ENGINE_IMAGE=', template)
         references['LLM_IMAGE'] = 'ghcr.io/qiudeng7/agent-memory-stack-llm:main'
         with self.assertRaises(ValueError):
             package.create_bundle(ROOT, self.root / 'mutable.tar.gz', references)

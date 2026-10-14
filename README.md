@@ -1,8 +1,8 @@
 # agent-memory-stack
 
-为个人 agent 提供记忆服务：OpenViking 管理记忆，Python 服务连接本地 Embedding 引擎，NestJS 适配 LLM。
+为个人 agent 提供记忆服务：OpenViking 管理记忆，Python Embedding 服务内置本地 llama.cpp 引擎，NestJS 适配 LLM；部署为三个容器。
 
-**当前为开发基线，尚不能完成记忆闭环。** LLM provider 仍为 `disabled`，真实 OAuth 登录和推理未接通；OpenViking 会等待 LLM 就绪。镜像发布成功不代表这些能力已经可用。
+当前 LLM provider 为 `disabled`，OpenViking 入口会等待两个适配服务 `/ready`，暂不接受记忆写入。
 
 ## 快速开始
 
@@ -29,7 +29,7 @@ docker compose up -d
 docker compose ps
 ```
 
-四个镜像从公共 GHCR 在线拉取，部署包按 digest 固定版本。模型首次启动自动下载并校验，数据保存在 Docker named volumes。LLM 健康地址为 `http://127.0.0.1:1455/health`；目前 `/ready` 返回 503，OpenViking 等待就绪是已知状态。
+部署包按 digest 固定两个自有 GHCR 镜像（LLM、Embedding）和 OpenViking 官方 `v0.5.0` 镜像，全部在线拉取。Embedding 首次启动自动下载并校验模型，最长等待 30 分钟；进度与故障查看 `docker compose logs -f embedding`，推理就绪看容器内 `/ready`，不能仅凭 `/health` 判断。模型、OAuth 和 OpenViking 数据保存在三个 Docker named volumes。LLM 健康地址为 `http://127.0.0.1:1455/health`。
 
 日常在部署目录执行 `docker compose pull`、`docker compose up -d`、`docker compose down`。**不要使用 `down -v`，它会删除持久数据。** 升级需先换用新版部署包的 digest，单独 `pull` 不会升级固定版本。
 
@@ -39,7 +39,7 @@ docker compose ps
 - [贡献指南](<CONTRIBUTING.md>)：源码开发、测试和本地构建。
 - [架构](<docs/architecture.md>)：服务边界、密钥与持久化。
 - [实施计划](<docs/implementation-plan.md>)：后续 OAuth 联机和记忆闭环。
-- [验证记录](<docs/verification.md>)：实际执行结果；旧引擎性能不是新 Mesa 镜像的验收结果。
+- [验证记录](<docs/verification.md>)：实际构建、测试和运行验证结果。
 
 ## 许可证
 

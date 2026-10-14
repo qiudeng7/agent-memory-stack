@@ -1,4 +1,4 @@
-# Maintainer-only build recipe. This file is not shipped in the deployment bundle.
+# Maintainer-only recipe for the two owned images; OpenViking stays official.
 services:
   llm-adapter:
     image: agent-memory-stack-llm:0.1.0
@@ -6,9 +6,3 @@ services:
   embedding:
     image: agent-memory-stack-embedding:0.1.0
     build: {context: .., dockerfile: apps/embedding/Dockerfile}
-  embedding-engine:
-    image: agent-memory-stack-engine:0.1.0
-    build: {context: .., dockerfile: deploy/engine.Dockerfile}
-  openviking:
-    image: agent-memory-stack-openviking:0.1.0
-    build: {context: .., dockerfile: deploy/openviking.Dockerfile}
